@@ -1,0 +1,152 @@
+@use '_variables' as *;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap');
+
+// Reset and base styles
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-primary;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: $text;
+  background-color: $background;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  cursor: none; // Hide default cursor for magical cursor
+  overflow-x: hidden; // Prevent horizontal scroll from particles
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-heading;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: $spacing-md;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1.125rem;
+}
+
+p {
+  margin-bottom: $spacing-md;
+}
+
+a {
+  color: $accent;
+  text-decoration: none;
+  transition: $transition;
+
+  &:hover {
+    color: $accent-light;
+  }
+}
+
+// Layout utilities
+.container {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 $container-padding;
+}
+
+.section {
+  padding: $spacing-3xl 0;
+}
+
+// Animation utilities
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.6s ease;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-animation {
+  opacity: 0;
+  transform: translateY(30px);
+  
+  &.animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Performance optimizations for animations
+* {
+  will-change: auto;
+}
+
+.animating {
+  will-change: transform, opacity;
+}
+
+// Scroll-triggered glow effects
+.glow-on-scroll {
+  transition: text-shadow 0.3s ease;
+  
+  &.glowing {
+    text-shadow: 0 0 20px rgba($accent, 0.8);
+  }
+}
+
+// Responsive utilities
+@media (max-width: $breakpoint-md) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+  
+  h3 {
+    font-size: 1.75rem;
+  }
+}
+
+// Reduced motion preferences
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

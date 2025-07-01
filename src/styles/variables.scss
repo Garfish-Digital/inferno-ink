@@ -1,0 +1,31 @@
+// Color Variables - Fire Theme
+$black: #0A0A0A;
+$dark-gray: #1A1A1A;
+$fire-red: #FF4444;
+$fire-orange: #FF6B35;
+$fire-yellow: #FFD23F;
+$ember-glow: #FF8C42;
+$white: #FFFFFF;
+$text-light: #E8E8E8;
+$text-dim: #B8B8B8;
+
+// Typography
+$font-gothic: 'Cinzel', 'Playfair Display', serif;
+$font-metal: 'Orbitron', 'Rajdhani', sans-serif;
+$font-body: 'Inter', sans-serif;
+
+// Spacing
+$section-padding: 100px 0;
+$container-padding: 0 20px;
+$max-width: 1200px;
+
+// Effects
+$glow-radius: 20px;
+$particle-size: 4px;
+$cursor-trail-length: 10;
+
+// Animations
+$ease-fire: cubic-bezier(0.4, 0, 0.2, 1);
+$duration-fast: 0.3s;
+$duration-medium: 0.6s;
+$duration-slow: 1.2s;

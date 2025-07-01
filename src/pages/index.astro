@@ -1,0 +1,878 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout>
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container">
+      <div class="nav-brand">
+        <a href="#hero">INFERNO INK</a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#services">Services</a></li>
+        <li><a href="#artists">Artists</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section id="hero" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">INFERNO INK</h1>
+        <p class="hero-tagline">Hell Hath No Fury</p>
+        <p class="hero-description">
+          Premium tattoo artistry crafted with passion, precision, and unparalleled skill. 
+          Your skin is our canvas, your story is our inspiration.
+        </p>
+        <a href="#contact" class="hero-cta">Book Consultation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="section services">
+    <div class="container">
+      <h2 class="section-title">Our Specialties</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon">🔥</div>
+          <h3>Custom Designs</h3>
+          <p>Unique, personalized artwork tailored to your vision and story. Our artists work closely with you to create one-of-a-kind pieces.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">⚡</div>
+          <h3>Cover-ups</h3>
+          <p>Transform old tattoos into stunning new masterpieces. Expert cover-up artistry that breathes new life into existing ink.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🎨</div>
+          <h3>Traditional</h3>
+          <p>Classic American traditional with bold lines and vibrant colors. Timeless designs that honor tattoo heritage.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">🖤</div>
+          <h3>Blackwork</h3>
+          <p>Striking black ink designs from geometric patterns to illustrative styles. Bold, dramatic artwork that makes a statement.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Artists Section -->
+  <section id="artists" class="section artists">
+    <div class="container">
+      <h2 class="section-title">Master Artists</h2>
+      <div class="artists-grid">
+        <div class="artist-card">
+          <div class="artist-image">
+            <img src="/images/artist-raven.jpg" alt="Raven Blackthorne - Blackwork & Gothic Tattoo Artist" />
+          </div>
+          <h3>Raven Blackthorne</h3>
+          <p class="artist-specialty">Blackwork & Gothic</p>
+          <p>15+ years specializing in dark art and intricate blackwork designs. Master of gothic imagery and bold geometric patterns.</p>
+        </div>
+        <div class="artist-card">
+          <div class="artist-image">
+            <img src="/images/artist-phoenix.jpg" alt="Phoenix Martinez - Color & Traditional Tattoo Artist" />
+          </div>
+          <h3>Phoenix Martinez</h3>
+          <p class="artist-specialty">Color & Traditional</p>
+          <p>Award-winning artist known for vibrant colors and traditional American style. Bringing classic tattoo artistry to modern designs.</p>
+        </div>
+        <div class="artist-card">
+          <div class="artist-image">
+            <img src="/images/artist-ash.jpg" alt="Ash Steele - Realism & Portrait Tattoo Artist" />
+          </div>
+          <h3>Ash Steele</h3>
+          <p class="artist-specialty">Realism & Portraits</p>
+          <p>Masterful realism artist bringing photos to life on skin. Specializing in photorealistic portraits and detailed artwork.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="section gallery">
+    <div class="container">
+      <h2 class="section-title">Gallery</h2>
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="/images/gallery-1.jpg" alt="Custom Blackwork Tattoo Design" />
+          <div class="gallery-overlay">
+            <span class="gallery-icon">🔍</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery-2.jpg" alt="Traditional Color Tattoo Art" />
+          <div class="gallery-overlay">
+            <span class="gallery-icon">🔍</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery-3.jpg" alt="Realistic Portrait Tattoo" />
+          <div class="gallery-overlay">
+            <span class="gallery-icon">🔍</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery-4.jpg" alt="Gothic Sleeve Tattoo Design" />
+          <div class="gallery-overlay">
+            <span class="gallery-icon">🔍</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery-5.jpg" alt="Geometric Tattoo Pattern" />
+          <div class="gallery-overlay">
+            <span class="gallery-icon">🔍</span>
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery-6.jpg" alt="Fire-themed Tattoo Artwork" />
+          <div class="gallery-overlay">
+            <span class="gallery-icon">🔍</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section contact">
+    <div class="container">
+      <h2 class="section-title">Book Your Session</h2>
+      <div class="contact-content">
+        <div class="contact-info">
+          <h3>Visit Us</h3>
+          <p>666 Fire Street<br>Hell's Kitchen, NY 10019</p>
+          <p><strong>Phone:</strong> (555) INK-FIRE</p>
+          <p><strong>Email:</strong> book@infernoink.com</p>
+          <div class="hours">
+            <h4>Studio Hours</h4>
+            <p>Monday - Saturday: 12PM - 10PM<br>Sunday: 1PM - 8PM</p>
+          </div>
+        </div>
+        <div class="contact-form">
+          <form>
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Email Address" required>
+            <input type="tel" placeholder="Phone Number">
+            <select required>
+              <option value="">Select Your Artist</option>
+              <option value="raven">Raven Blackthorne</option>
+              <option value="phoenix">Phoenix Martinez</option>
+              <option value="ash">Ash Steele</option>
+            </select>
+            <textarea placeholder="Describe your tattoo idea..." rows="5" required></textarea>
+            <button type="submit" class="submit-btn">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style lang="scss">
+  @use '../styles/_variables' as *;
+
+  // Navigation
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba($background, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba($primary, 0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    
+    &.scrolled {
+      background: rgba($background, 0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba($primary, 0.4);
+      box-shadow: 0 4px 20px rgba($background, 0.8);
+      
+      .container {
+        padding: $spacing-sm $container-padding;
+      }
+      
+      .nav-brand a {
+        font-size: 1.3rem;
+        text-shadow: 0 0 15px rgba($primary, 0.6);
+      }
+    }
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: $spacing-md $container-padding;
+    }
+
+    .nav-brand {
+      a {
+        font-family: $font-accent;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: $text;
+        text-decoration: none;
+        letter-spacing: 0.1em;
+        background: linear-gradient(135deg, $text 0%, $accent 50%, $primary 100%);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        
+        &:hover {
+          text-shadow: 0 0 10px rgba($primary, 0.5);
+        }
+      }
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: $spacing-xl;
+      margin: 0;
+      padding: 0;
+
+      li {
+        a {
+          color: $text-dim;
+          text-decoration: none;
+          font-weight: 500;
+          transition: $transition;
+          position: relative;
+          padding: $spacing-sm 0;
+
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, $primary, $accent);
+            transition: $transition;
+          }
+
+          &:hover {
+            color: $accent;
+
+            &::after {
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .hero {
+    padding-top: 80px; // Account for fixed navbar
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(135deg, $background 0%, $background-light 100%);
+    position: relative;
+    overflow: hidden;
+
+    // Add subtle texture overlay
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 30% 50%, rgba($primary, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba($accent, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-family: $font-accent;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      color: $text;
+      margin-bottom: $spacing-lg;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 20px rgba($primary, 0.3);
+      
+      // Gradient text effect
+      background: linear-gradient(135deg, $text 0%, $accent 50%, $primary 100%);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-size: 200% 200%;
+      animation: gradientShift 3s ease-in-out infinite;
+    }
+
+    .hero-tagline {
+      font-family: $font-heading;
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      color: $accent;
+      margin-bottom: $spacing-xl;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .hero-description {
+      font-size: 1.125rem;
+      color: $text-dim;
+      margin-bottom: $spacing-2xl;
+      line-height: 1.8;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      padding: $spacing-lg $spacing-2xl;
+      background: linear-gradient(135deg, $primary 0%, $accent 100%);
+      color: $text;
+      font-family: $font-accent;
+      font-weight: 600;
+      font-size: 1.125rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-radius: $border-radius;
+      transition: $transition;
+      border: 2px solid transparent;
+      box-shadow: 0 8px 32px rgba($primary, 0.3);
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba($primary, 0.4);
+        border-color: rgba($text, 0.2);
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+    }
+  }
+
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  // Services Section
+  .services {
+    background: linear-gradient(180deg, $background-light 0%, $background 100%);
+
+    .section-title {
+      text-align: center;
+      margin-bottom: $spacing-3xl;
+      color: $text;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: $spacing-xl;
+    }
+
+    .service-card {
+      background: linear-gradient(135deg, $background-light 0%, $background-lighter 100%);
+      padding: $spacing-2xl;
+      border-radius: $border-radius-lg;
+      text-align: center;
+      border: 1px solid rgba($primary, 0.2);
+      transition: $transition;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba($primary, 0.05) 0%, rgba($accent, 0.05) 100%);
+        opacity: 0;
+        transition: $transition;
+      }
+
+      &:hover {
+        transform: translateY(-5px);
+        border-color: rgba($primary, 0.4);
+        box-shadow: $shadow-lg;
+
+        &::before {
+          opacity: 1;
+        }
+
+        .service-icon {
+          transform: scale(1.1);
+        }
+      }
+
+      .service-icon {
+        font-size: 3rem;
+        margin-bottom: $spacing-lg;
+        transition: $transition;
+        filter: grayscale(0.5);
+      }
+
+      h3 {
+        font-family: $font-accent;
+        color: $accent;
+        margin-bottom: $spacing-md;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      p {
+        color: $text-dim;
+        line-height: 1.6;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // Artists Section
+  .artists {
+    background: linear-gradient(180deg, $background 0%, $background-light 100%);
+
+    .section-title {
+      text-align: center;
+      margin-bottom: $spacing-3xl;
+      color: $text;
+    }
+
+    .artists-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: $spacing-2xl;
+    }
+
+    .artist-card {
+      text-align: center;
+      padding: $spacing-xl;
+      background: rgba($background-lighter, 0.5);
+      border-radius: $border-radius-lg;
+      transition: $transition;
+      border: 1px solid rgba($accent, 0.2);
+
+      &:hover {
+        transform: scale(1.02);
+        border-color: rgba($accent, 0.4);
+        box-shadow: $shadow-lg;
+
+        .artist-image {
+          box-shadow: 0 0 30px rgba($primary, 0.4);
+        }
+      }
+
+      .artist-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin: 0 auto $spacing-lg;
+        border: 3px solid rgba($accent, 0.3);
+        transition: $transition;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(135deg, $primary 0%, $accent 100%);
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          transition: $transition;
+          border-radius: 50%;
+          position: relative;
+          z-index: 1; // Above placeholder
+        }
+
+        &:hover img {
+          transform: scale(1.1);
+          filter: brightness(1.1) contrast(1.1);
+        }
+
+        // Fallback for missing images - behind the actual image
+        &::before {
+          content: '👤';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 4rem;
+          opacity: 0.7;
+          z-index: 0; // Behind the image
+          pointer-events: none;
+        }
+      }
+
+      h3 {
+        font-family: $font-accent;
+        color: $text;
+        margin-bottom: $spacing-sm;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      .artist-specialty {
+        color: $accent;
+        font-weight: 600;
+        margin-bottom: $spacing-md;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.9rem;
+      }
+
+      p:last-child {
+        color: $text-dim;
+        line-height: 1.6;
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  // Gallery Section
+  .gallery {
+    background: linear-gradient(180deg, $background-light 0%, $background 100%);
+
+    .section-title {
+      text-align: center;
+      margin-bottom: $spacing-3xl;
+      color: $text;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: $spacing-lg;
+    }
+
+    .gallery-item {
+      aspect-ratio: 1;
+      border-radius: $border-radius-lg;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      will-change: transform, opacity;
+      background: linear-gradient(135deg, $primary 0%, $accent 100%); // Fallback background
+      
+      // Ensure visibility and prevent layout issues
+      opacity: 1;
+      transform: scale(1);
+      visibility: visible;
+      
+      // CSS Fallback animation for when JS doesn't load
+      animation: galleryFadeIn 0.8s ease-out forwards;
+      
+      // Stagger the CSS fallback
+      @for $i from 1 through 6 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{($i - 1) * 0.1}s;
+        }
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transition: $transition;
+        border-radius: $border-radius-lg;
+        position: relative;
+        z-index: 1;
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba($background, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 2;
+        border-radius: $border-radius-lg;
+
+        .gallery-icon {
+          font-size: 3rem;
+          filter: grayscale(0.3) sepia(1) hue-rotate(0deg) saturate(2) brightness(1.2);
+          transform: scale(0.5);
+          transition: all 0.3s ease;
+        }
+      }
+
+      // Fallback icon for missing images (behind image)
+      &::before {
+        content: '🎨';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 4rem;
+        opacity: 0.7;
+        z-index: 0; // Behind image
+      }
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 20px 40px rgba($primary, 0.4);
+
+        img {
+          transform: scale(1.1);
+          filter: brightness(0.8) contrast(1.2);
+        }
+
+        .gallery-overlay {
+          opacity: 1;
+          background: rgba($background, 0.5);
+
+          .gallery-icon {
+            transform: scale(1);
+            filter: grayscale(0) sepia(1) hue-rotate(10deg) saturate(3) brightness(1.5);
+          }
+        }
+      }
+      
+      // Enhanced state for animations
+      &.animating {
+        will-change: transform, opacity, rotation;
+      }
+      
+      // Visible state for debugging
+      &.gallery-visible {
+        opacity: 1 !important;
+        transform: scale(1) !important;
+        visibility: visible !important;
+      }
+    }
+  }
+
+  // CSS Fallback Keyframes
+  @keyframes galleryFadeIn {
+    0% {
+      opacity: 0;
+      transform: scale(0.8) rotate(10deg);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+  }
+
+  // Intersection Observer fallback
+  @media (prefers-reduced-motion: no-preference) {
+    .gallery-item {
+      opacity: 0;
+      transform: scale(0.5);
+      
+      &.in-view {
+        opacity: 1;
+        transform: scale(1);
+        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+    }
+  }
+
+  // Contact Section
+  .contact {
+    background: linear-gradient(180deg, $background 0%, $background-light 100%);
+
+    .section-title {
+      text-align: center;
+      margin-bottom: $spacing-3xl;
+      color: $text;
+    }
+
+    .contact-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: $spacing-3xl;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .contact-info {
+      h3 {
+        font-family: $font-accent;
+        color: $accent;
+        margin-bottom: $spacing-lg;
+        font-size: 1.5rem;
+        font-weight: 600;
+      }
+
+      p {
+        margin-bottom: $spacing-md;
+        line-height: 1.6;
+        color: $text-dim;
+
+        strong {
+          color: $accent;
+        }
+      }
+
+      .hours {
+        margin-top: $spacing-xl;
+        padding: $spacing-lg;
+        background: rgba($background-lighter, 0.5);
+        border-radius: $border-radius;
+        border-left: 4px solid $primary;
+
+        h4 {
+          color: $accent;
+          margin-bottom: $spacing-md;
+          font-family: $font-accent;
+          font-weight: 600;
+        }
+
+        p {
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    .contact-form {
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-lg;
+      }
+
+      input,
+      select,
+      textarea {
+        padding: $spacing-md;
+        background: rgba($background-lighter, 0.5);
+        border: 1px solid rgba($accent, 0.3);
+        border-radius: $border-radius;
+        color: $text;
+        font-size: 1rem;
+        font-family: $font-primary;
+        transition: $transition;
+
+        &:focus {
+          outline: none;
+          border-color: $accent;
+          box-shadow: 0 0 10px rgba($accent, 0.2);
+          background: rgba($background-lighter, 0.8);
+        }
+
+        &::placeholder {
+          color: $text-muted;
+        }
+      }
+
+      select {
+        cursor: pointer;
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 120px;
+      }
+
+      .submit-btn {
+        padding: $spacing-lg $spacing-xl;
+        background: linear-gradient(135deg, $primary 0%, $accent 100%);
+        color: $text;
+        border: none;
+        border-radius: $border-radius;
+        font-size: 1.125rem;
+        font-weight: 600;
+        font-family: $font-accent;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        cursor: pointer;
+        transition: $transition;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 25px rgba($primary, 0.3);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: $breakpoint-md) {
+    .hero {
+      .hero-description {
+        font-size: 1rem;
+        margin-bottom: $spacing-xl;
+      }
+
+      .hero-cta {
+        padding: $spacing-md $spacing-xl;
+        font-size: 1rem;
+      }
+    }
+
+    .services {
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .artists {
+      .artists-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .gallery {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+    }
+
+    .contact {
+      .contact-content {
+        grid-template-columns: 1fr;
+        gap: $spacing-xl;
+      }
+    }
+
+    .navbar {
+      .nav-links {
+        gap: $spacing-lg;
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-sm) {
+    .navbar {
+      .nav-links {
+        display: none; // Simple approach - could implement mobile menu later
+      }
+    }
+  }
+</style>
