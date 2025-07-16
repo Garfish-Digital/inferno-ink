@@ -20,10 +20,19 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="robots" content="noindex, nofollow" />
     <title>{title}</title>
   </head>
   <body>
     <MagicalCursor />
+    
+    <!-- Garfish Digital Watermark Badge -->
+    <div class="garfish-badge">
+      <a href="https://garfishdigital.netlify.app" target="_blank" rel="noopener noreferrer">
+        ← garfish digital
+      </a>
+    </div>
+    
     <main>
       <slot />
     </main>
@@ -74,4 +83,44 @@ const {
 
 <style lang="scss">
   @use '../styles/global.scss';
+  @use '../styles/_variables' as *;
+
+  // Garfish Digital Watermark
+  .garfish-badge {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10001; // Higher than magical cursor
+    pointer-events: auto;
+    cursor: pointer !important; // Override cursor: none
+
+    a {
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem; // Temporarily larger for debugging
+      font-weight: 600;
+      color: rgba(200, 200, 200, 0.8); // Temporarily more visible for debugging
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.3s ease;
+      display: block;
+      white-space: nowrap;
+      cursor: pointer !important; // Override cursor: none
+      
+      &:hover {
+        color: rgba(240, 240, 240, 0.9); // More visible on hover
+      }
+    }
+  }
+
+  // Responsive adjustments
+  @media (max-width: $breakpoint-sm) {
+    .garfish-badge {
+      bottom: 15px;
+      left: 15px;
+      
+      a {
+        font-size: 0.7rem;
+      }
+    }
+  }
 </style>

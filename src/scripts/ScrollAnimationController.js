@@ -360,11 +360,13 @@ class ScrollAnimationController {
         transformOrigin: "center"
       })
       .to(card.querySelector('.artist-image'), {
-        duration: 1.2,
+        duration: 1.5, // Match card duration
         scale: 1,
-        rotation: 360,
-        ease: this.customEasing.magicSpell,
-        delay: -1
+        // Remove rotation entirely
+        ease: "power2.out", // Smoother easing
+        delay: -1.5, // Start with card
+        force3D: true,
+        transformOrigin: "center center"
       })
       .to(card.querySelector('h3'), {
         duration: 0.8,
@@ -387,12 +389,27 @@ class ScrollAnimationController {
         opacity: 1,
         ease: this.customEasing.smokeRise,
         delay: -0.4
+      })
+      // Add transition buffer for smooth finish
+      .to(card, {
+        duration: 0.3,
+        ease: "power2.out",
+        onComplete: () => {
+          // Start gentle floating animation
+          gsap.to(card, {
+            duration: 4,
+            y: -5,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true
+          });
+        }
       });
 
       // Set initial states
       gsap.set(card.querySelector('.artist-image'), { 
         scale: 0.5, 
-        rotation: -180 
+        // rotation: -180 
       });
       gsap.set(card.querySelector('h3'), { 
         y: 50, 

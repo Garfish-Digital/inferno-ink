@@ -11,6 +11,7 @@ class MagicalCursorController {
     
     // Elements
     this.wandElement = null;
+    this.burningBallElement = null;
     this.auraElement = null;
     this.sparkleCanvas = null;
     this.emberCanvas = null;
@@ -52,11 +53,12 @@ class MagicalCursorController {
 
   setupElements() {
     this.wandElement = document.getElementById('cursor-wand');
+    this.burningBallElement = document.getElementById('cursor-burning-ball');
     this.auraElement = document.getElementById('cursor-aura');
     this.sparkleCanvas = document.getElementById('sparkle-canvas');
     this.emberCanvas = document.getElementById('ember-canvas');
     
-    if (!this.wandElement) {
+    if (!this.wandElement && !this.burningBallElement) {
       console.error('Magical cursor elements not found');
       return;
     }
@@ -249,21 +251,42 @@ class MagicalCursorController {
     this.createClickExplosion();
     
     // Intense wand glow animation
-    gsap.to(this.wandElement.querySelector('.wand-tip'), {
-      scale: 1.8,
-      duration: 0.2,
-      ease: "back.out(1.7)"
-    });
+    if (this.wandElement) {
+      gsap.to(this.wandElement.querySelector('.wand-tip'), {
+        scale: 1.8,
+        duration: 0.2,
+        ease: "back.out(1.7)"
+      });
+    }
+    
+    // Intense burning ball glow animation
+    if (this.burningBallElement) {
+      gsap.to(this.burningBallElement.querySelector('.ball-core'), {
+        scale: 1.6,
+        duration: 0.2,
+        ease: "back.out(1.7)"
+      });
+    }
   }
 
   onMouseUp() {
     this.isClicking = false;
     
-    gsap.to(this.wandElement.querySelector('.wand-tip'), {
-      scale: 1,
-      duration: 0.3,
-      ease: "back.out(1.7)"
-    });
+    if (this.wandElement) {
+      gsap.to(this.wandElement.querySelector('.wand-tip'), {
+        scale: 1,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+      });
+    }
+    
+    if (this.burningBallElement) {
+      gsap.to(this.burningBallElement.querySelector('.ball-core'), {
+        scale: 1,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+      });
+    }
   }
 
   onMouseEnter() {
@@ -284,11 +307,21 @@ class MagicalCursorController {
     this.isHovering = true;
     
     // Enhanced hover effects
-    gsap.to(this.wandElement, {
-      scale: 1.2,
-      duration: 0.3,
-      ease: "back.out(1.7)"
-    });
+    if (this.wandElement) {
+      gsap.to(this.wandElement, {
+        scale: 1.2,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+      });
+    }
+    
+    if (this.burningBallElement) {
+      gsap.to(this.burningBallElement, {
+        scale: 1.3,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+      });
+    }
     
     gsap.to(this.auraElement, {
       scale: 1.5,
@@ -300,11 +333,21 @@ class MagicalCursorController {
   onHoverEnd() {
     this.isHovering = false;
     
-    gsap.to(this.wandElement, {
-      scale: 1,
-      duration: 0.3,
-      ease: "back.out(1.7)"
-    });
+    if (this.wandElement) {
+      gsap.to(this.wandElement, {
+        scale: 1,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+      });
+    }
+    
+    if (this.burningBallElement) {
+      gsap.to(this.burningBallElement, {
+        scale: 1,
+        duration: 0.3,
+        ease: "back.out(1.7)"
+      });
+    }
     
     gsap.to(this.auraElement, {
       scale: 1,
@@ -314,19 +357,33 @@ class MagicalCursorController {
   }
 
   updateWandPosition() {
-    if (!this.wandElement || !this.auraElement) return;
+    if (!this.auraElement) return;
     
-    // Calculate wand rotation based on movement
-    const angle = Math.atan2(this.velocity.y, this.velocity.x);
+    // Handle wand positioning if wand exists
+    if (this.wandElement) {
+      // Calculate wand rotation based on movement
+      const angle = Math.atan2(this.velocity.y, this.velocity.x);
+      
+      // Smooth wand movement with GSAP
+      gsap.to(this.wandElement, {
+        x: this.mouse.x - 20,
+        y: this.mouse.y - 4,
+        rotation: angle * (180 / Math.PI),
+        duration: 0.1,
+        ease: "power2.out"
+      });
+    }
     
-    // Smooth wand movement with GSAP
-    gsap.to(this.wandElement, {
-      x: this.mouse.x - 20,
-      y: this.mouse.y - 4,
-      rotation: angle * (180 / Math.PI),
-      duration: 0.1,
-      ease: "power2.out"
-    });
+    // Handle burning ball positioning if burning ball exists
+    if (this.burningBallElement) {
+      // Smooth burning ball movement with GSAP
+      gsap.to(this.burningBallElement, {
+        x: this.mouse.x - 12,
+        y: this.mouse.y - 12,
+        duration: 0.15,
+        ease: "power2.out"
+      });
+    }
     
     gsap.to(this.auraElement, {
       x: this.mouse.x - 40,

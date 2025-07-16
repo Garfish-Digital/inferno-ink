@@ -24,10 +24,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <h1 class="hero-title">INFERNO INK</h1>
         <p class="hero-tagline">Hell Hath No Fury</p>
         <p class="hero-description">
-          Premium tattoo artistry crafted with passion, precision, and unparalleled skill. 
-          Your skin is our canvas, your story is our inspiration.
+          Extreme tattoo artistry from those who know.
         </p>
-        <a href="#contact" class="hero-cta">Book Consultation</a>
+        <a href="#contact" class="hero-cta">Book Now</a>
       </div>
     </div>
   </section>
@@ -70,7 +69,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="artist-image">
             <img src="/images/artist-raven.jpg" alt="Raven Blackthorne - Blackwork & Gothic Tattoo Artist" />
           </div>
-          <h3>Raven Blackthorne</h3>
+          <h3>Avery Blackthorne</h3>
           <p class="artist-specialty">Blackwork & Gothic</p>
           <p>15+ years specializing in dark art and intricate blackwork designs. Master of gothic imagery and bold geometric patterns.</p>
         </div>
@@ -78,7 +77,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="artist-image">
             <img src="/images/artist-phoenix.jpg" alt="Phoenix Martinez - Color & Traditional Tattoo Artist" />
           </div>
-          <h3>Phoenix Martinez</h3>
+          <h3>Pepe Martinez</h3>
           <p class="artist-specialty">Color & Traditional</p>
           <p>Award-winning artist known for vibrant colors and traditional American style. Bringing classic tattoo artistry to modern designs.</p>
         </div>
@@ -86,7 +85,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="artist-image">
             <img src="/images/artist-ash.jpg" alt="Ash Steele - Realism & Portrait Tattoo Artist" />
           </div>
-          <h3>Ash Steele</h3>
+          <h3>Ashton Starke</h3>
           <p class="artist-specialty">Realism & Portraits</p>
           <p>Masterful realism artist bringing photos to life on skin. Specializing in photorealistic portraits and detailed artwork.</p>
         </div>
@@ -102,37 +101,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="gallery-item">
           <img src="/images/gallery-1.jpg" alt="Custom Blackwork Tattoo Design" />
           <div class="gallery-overlay">
-            <span class="gallery-icon">🔍</span>
+            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-2.jpg" alt="Traditional Color Tattoo Art" />
           <div class="gallery-overlay">
-            <span class="gallery-icon">🔍</span>
+            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-3.jpg" alt="Realistic Portrait Tattoo" />
           <div class="gallery-overlay">
-            <span class="gallery-icon">🔍</span>
+            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-4.jpg" alt="Gothic Sleeve Tattoo Design" />
           <div class="gallery-overlay">
-            <span class="gallery-icon">🔍</span>
+            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-5.jpg" alt="Geometric Tattoo Pattern" />
           <div class="gallery-overlay">
-            <span class="gallery-icon">🔍</span>
+            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-6.jpg" alt="Fire-themed Tattoo Artwork" />
           <div class="gallery-overlay">
-            <span class="gallery-icon">🔍</span>
+            <!-- <span class="gallery-icon">🔍</span> -->
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery-7.jpg" alt="Geometric Tattoo Pattern" />
+          <div class="gallery-overlay">
+            <!-- <span class="gallery-icon">🔍</span> -->
+          </div>
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery-8.jpg" alt="Fire-themed Tattoo Artwork" />
+          <div class="gallery-overlay">
+            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
       </div>
@@ -344,22 +355,73 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .hero-cta {
       display: inline-block;
       padding: $spacing-lg $spacing-2xl;
-      background: linear-gradient(135deg, $primary 0%, $accent 100%);
-      color: $text;
+      width: 25vw;
       font-family: $font-accent;
-      font-weight: 600;
-      font-size: 1.125rem;
+      font-weight: 700;
+      font-size: 1.25rem; // Enlarged text
       text-transform: uppercase;
       letter-spacing: 0.05em;
       border-radius: $border-radius;
       transition: $transition;
-      border: 2px solid transparent;
+      position: relative;
       box-shadow: 0 8px 32px rgba($primary, 0.3);
+      
+      // Full fire gradient background
+      background: radial-gradient(circle at 50% 50%, 
+        $fire-red 0%, 
+        $fire-orange 25%, 
+        $fire-yellow 50%, 
+        $ember-glow 75%, 
+        $fire-red 100%);
+      background-size: 300% 300%;
+      animation: fireRadialMove 8s ease-in-out infinite;
+      
+      // Black background to hide gradient except text/border
+      &::before {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        right: 4px;
+        bottom: 4px;
+        background: $background;
+        border-radius: calc($border-radius - 4px);
+        z-index: 1;
+      }
+      
+      // Fire gradient text on top
+      &::after {
+        content: 'Book Now';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at 50% 50%, 
+          $fire-red 0%, 
+          $fire-orange 25%, 
+          $fire-yellow 50%, 
+          $ember-glow 75%, 
+          $fire-red 100%);
+        background-size: 300% 300%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fireRadialMove 8s ease-in-out infinite;
+        font-family: inherit;
+        font-weight: inherit;
+        font-size: inherit;
+        text-transform: inherit;
+        letter-spacing: inherit;
+        z-index: 2;
+      }
 
       &:hover {
         transform: translateY(-2px);
         box-shadow: 0 12px 40px rgba($primary, 0.4);
-        border-color: rgba($text, 0.2);
       }
 
       &:active {
@@ -798,17 +860,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       .submit-btn {
         padding: $spacing-lg $spacing-xl;
-        background: linear-gradient(135deg, $primary 0%, $accent 100%);
-        color: $text;
         border: none;
         border-radius: $border-radius;
-        font-size: 1.125rem;
-        font-weight: 600;
+        font-size: 1.25rem; // Enlarged text
+        font-weight: 700;
         font-family: $font-accent;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         cursor: pointer;
         transition: $transition;
+        position: relative;
+        
+        // Full fire gradient background
+        background: radial-gradient(circle at 50% 50%, 
+          $fire-red 0%, 
+          $fire-orange 25%, 
+          $fire-yellow 50%, 
+          $ember-glow 75%, 
+          $fire-red 100%);
+        background-size: 300% 300%;
+        animation: fireRadialMove 8s ease-in-out infinite;
+        
+        // Black background to hide gradient except text/border
+        &::before {
+          content: '';
+          position: absolute;
+          top: 4px;
+          left: 4px;
+          right: 4px;
+          bottom: 4px;
+          background: $background;
+          border-radius: calc($border-radius - 4px);
+          z-index: 1;
+        }
+        
+        // Fire gradient text on top
+        &::after {
+          content: 'Send Message';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: radial-gradient(circle at 50% 50%, 
+            $fire-red 0%, 
+            $fire-orange 25%, 
+            $fire-yellow 50%, 
+            $ember-glow 75%, 
+            $fire-red 100%);
+          background-size: 300% 300%;
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: fireRadialMove 8s ease-in-out infinite;
+          font-family: inherit;
+          font-weight: inherit;
+          font-size: inherit;
+          text-transform: inherit;
+          letter-spacing: inherit;
+          z-index: 2;
+        }
 
         &:hover {
           transform: translateY(-2px);
@@ -819,6 +933,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           transform: translateY(0);
         }
       }
+    }
+  }
+
+  // Fire Radial Gradient Animation
+  @keyframes fireRadialMove {
+    0% {
+      background-position: 0% 0%;
+    }
+    25% {
+      background-position: 100% 50%;
+    }
+    50% {
+      background-position: 100% 100%;
+    }
+    75% {
+      background-position: 50% 100%;
+    }
+    100% {
+      background-position: 0% 0%;
     }
   }
 
