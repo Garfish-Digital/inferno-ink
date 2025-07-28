@@ -7,11 +7,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <nav class="navbar">
     <div class="container flex justify-end">
         <div class="nav-icon">🔥</div>
+      
+      <!-- Desktop Navigation -->
       <ul class="nav-links">
         <li><a href="#services">Services</a></li>
         <li><a href="#artists">Artists</a></li>
         <li><a href="#gallery">Gallery</a></li>
         <li><a href="#contact">Contact</a></li>
+      </ul>
+
+      <!-- Mobile Hamburger Button -->
+      <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay">
+      <ul class="mobile-nav-links">
+        <li><a href="#services" class="mobile-nav-link">Services</a></li>
+        <li><a href="#artists" class="mobile-nav-link">Artists</a></li>
+        <li><a href="#gallery" class="mobile-nav-link">Gallery</a></li>
+        <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
       </ul>
     </div>
   </nav>
@@ -255,6 +274,161 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               width: 100%;
             }
           }
+        }
+      }
+    }
+  }
+
+  // Mobile Hamburger Menu Styles
+  .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 1001;
+    transition: $transition;
+
+    .hamburger-line {
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, $primary, $accent);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+
+    &:hover .hamburger-line {
+      background: radial-gradient(circle at 50% 50%, 
+        $fire-red 0%, 
+        $fire-orange 25%, 
+        $fire-yellow 50%, 
+        $ember-glow 75%, 
+        $fire-red 100%);
+      background-size: 200% 200%;
+      animation: fireRadialMove 2s ease-in-out infinite;
+      box-shadow: 0 0 8px rgba($primary, 0.5);
+    }
+
+    // Active state (menu open)
+    &.active {
+      .hamburger-line:nth-child(1) {
+        transform: rotate(45deg) translate(8px, 8px);
+      }
+      
+      .hamburger-line:nth-child(2) {
+        opacity: 0;
+      }
+      
+      .hamburger-line:nth-child(3) {
+        transform: rotate(-45deg) translate(8px, -8px);
+      }
+    }
+  }
+
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba($background, 0.98);
+    backdrop-filter: blur(20px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-100%);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+    &.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    .mobile-nav-links {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      text-align: center;
+
+      li {
+        margin: $spacing-xl 0;
+        opacity: 0;
+        transform: translateY(30px);
+        transition: all 0.3s ease;
+
+        &:nth-child(1) { transition-delay: 0.1s; }
+        &:nth-child(2) { transition-delay: 0.2s; }
+        &:nth-child(3) { transition-delay: 0.3s; }
+        &:nth-child(4) { transition-delay: 0.4s; }
+      }
+    }
+
+    &.active .mobile-nav-links li {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mobile-nav-link {
+      font-family: $font-accent;
+      font-size: 2rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: $text;
+      display: block;
+      padding: $spacing-lg $spacing-xl;
+      border-radius: $border-radius;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+
+      // Fiery gradient background (hidden initially)
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 50% 50%, 
+          $fire-red 0%, 
+          $fire-orange 25%, 
+          $fire-yellow 50%, 
+          $ember-glow 75%, 
+          $fire-red 100%);
+        background-size: 300% 300%;
+        animation: fireRadialMove 8s ease-in-out infinite;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+      }
+
+      // Fiery gradient text
+      &:hover {
+        background: radial-gradient(circle at 50% 50%, 
+          $fire-red 0%, 
+          $fire-orange 25%, 
+          $fire-yellow 50%, 
+          $ember-glow 75%, 
+          $fire-red 100%);
+        background-size: 300% 300%;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: fireRadialMove 8s ease-in-out infinite;
+        transform: scale(1.05);
+        text-shadow: 0 0 20px rgba($primary, 0.5);
+
+        &::before {
+          opacity: 0.1;
         }
       }
     }
@@ -635,7 +809,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      will-change: transform, opacity;
       background: linear-gradient(135deg, $primary 0%, $accent 100%); // Fallback background
       
       // Ensure visibility and prevent layout issues
@@ -719,9 +892,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         }
       }
       
-      // Enhanced state for animations
+      // Enhanced state for animations - will-change now handled conditionally in JS
       &.animating {
-        will-change: transform, opacity, rotation;
+        // Animation state class for reference
       }
       
       // Visible state for debugging
@@ -1060,7 +1233,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   @media (max-width: $breakpoint-sm) {
     .navbar {
       .nav-links {
-        display: none; // Simple approach - could implement mobile menu later
+        display: none; // Hide desktop navigation
+      }
+      
+      .mobile-menu-toggle {
+        display: flex; // Show hamburger menu
       }
     }
   }

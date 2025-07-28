@@ -429,187 +429,117 @@ class ScrollAnimationController {
   }
 
   createGalleryAnimations() {
-    const gallerySection = document.querySelector('.gallery');
     const galleryItems = document.querySelectorAll('.gallery-item');
     
-    if (galleryItems.length === 0 || !gallerySection) {
+    if (galleryItems.length === 0) {
       console.warn('Gallery elements not found');
       return;
     }
 
-    // Create individual ScrollTriggers for each gallery item - EACH ITEM IS ITS OWN TRIGGER
-    galleryItems.forEach((item, index) => {
-      const initialRotation = (Math.random() - 0.5) * 60;
-      
-      // Set initial state for this specific item
-      gsap.set(item, { 
-        scale: 0, 
-        opacity: 0, 
-        rotation: initialRotation,
-        transformOrigin: "center",
-        visibility: "visible",
-        force3D: true
-      });
-      
-      // Create entrance animation timeline for this item
-      // KEY FIX: Use the ITEM ITSELF as the trigger, not the gallery section
-      const itemTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: item, // ← FIXED: Each item triggers its own animation
-          start: "top 85%", // When THIS item enters viewport
-          end: "bottom 15%",
-          toggleActions: "play none none reverse",
-          once: false,
-          refreshPriority: 1,
-          onEnter: () => {
-            console.log(`Gallery item ${index + 1} triggered individually`);
-          },
-          onLeave: () => {
-            console.log(`Gallery item ${index + 1} left viewport`);
-          },
-          onEnterBack: () => {
-            console.log(`Gallery item ${index + 1} re-entered viewport`);
-          }
-        }
-      });
-
-      // Main entrance animation with staggered timing
-      itemTl.to(item, {
-        duration: 1.2,
-        scale: 1,
-        opacity: 1,
-        rotation: 0,
-        ease: this.customEasing.sparkBurst,
-        transformOrigin: "center",
-        force3D: true,
-        onStart: () => {
-          item.classList.add('animating');
-          console.log(`Gallery item ${index + 1} animation started`);
-        },
-        onComplete: () => {
-          item.classList.remove('animating');
-          this.addGalleryItemEffects(item);
-          console.log(`Gallery item ${index + 1} animation completed`);
-        }
-      });
-
-      // Add continuous floating animation after entrance
-      itemTl.to(item, {
-        duration: 3 + Math.random() * 2,
-        rotation: (Math.random() - 0.5) * 8,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        delay: 0.3
-      }, 0.8); // Start floating after entrance completes
-
-      this.animationTimelines.set(`gallery-item-${index}`, itemTl);
+    // Set initial state for all items
+    gsap.set(galleryItems, { 
+      scale: 0, 
+      opacity: 0, 
+      transformOrigin: "center",
+      visibility: "visible"
     });
 
-    // Create a fallback animation for the entire gallery section
-    const fallbackTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: gallerySection,
-        start: "top 85%",
-        end: "bottom 15%",
-        toggleActions: "play none none reverse",
-        onEnter: () => {
-          console.log('Gallery fallback triggered');
-          // Ensure all items are visible as fallback
-          galleryItems.forEach(item => {
-            if (gsap.getProperty(item, "opacity") < 0.1) {
-              gsap.to(item, {
-                duration: 0.8,
-                scale: 1,
-                opacity: 1,
-                rotation: 0,
-                ease: "power2.out"
+    // Use ScrollTrigger.batch for optimized performance - single scroll listener
+    ScrollTrigger.batch('.gallery-item', {
+      onEnter: (elements) => {
+        // Animate elements with stagger and conditional will-change
+        elements.forEach(element => {
+          element.style.willChange = 'transform, opacity'; // Conditional will-change
+        });
+        
+        gsap.fromTo(elements, 
+          {
+            scale: 0,
+            opacity: 0,
+            y: 100
+          },
+          {
+            duration: 1.2,
+            scale: 1,
+            opacity: 1,
+            y: 0,
+            ease: this.customEasing.sparkBurst,
+            stagger: 0.15,
+            onStart: function() {
+              this.targets().forEach(target => target.classList.add('animating'));
+            },
+            onComplete: function() {
+              // Clean up will-change and add hover effects
+              this.targets().forEach(target => {
+                target.style.willChange = 'auto';
+                target.classList.remove('animating');
+                this.addGalleryItemEffects(target);
               });
-            }
-          });
-        }
-      }
+            }.bind(this)
+          }
+        );
+      },
+      onLeave: (elements) => {
+        // Clean up will-change on leave
+        elements.forEach(element => {
+          element.style.willChange = 'auto';
+        });
+      },
+      start: "top 90%",
+      end: "bottom 10%"
     });
 
-    this.animationTimelines.set('gallery-fallback', fallbackTl);
+    // Store reference for cleanup
+    this.animationTimelines.set('gallery-batch', 'batch-animation');
   }
 
   addGalleryItemEffects(item) {
-    const img = item.querySelector('img');
     const overlay = item.querySelector('.gallery-overlay');
     
     item.addEventListener('mouseenter', () => {
+      // Apply conditional will-change only during hover
+      item.style.willChange = 'transform, opacity';
+      
+      // Use single transform3d instead of separate scale/rotation
       gsap.to(item, {
         duration: 0.4,
-        scale: 1.08,
-        rotation: (Math.random() - 0.5) * 15,
+        transform: "translate3d(0, -8px, 0) scale3d(1.05, 1.05, 1)",
         boxShadow: "0 25px 60px rgba(255, 87, 34, 0.5)",
         ease: this.customEasing.flameFlicker,
-        transformOrigin: "center"
+        force3D: true
       });
       
-      if (img) {
-        gsap.to(img, {
-          duration: 0.4,
-          scale: 1.15,
-          filter: "brightness(0.7) contrast(1.3) saturate(1.2)",
-          ease: this.customEasing.flameFlicker
-        });
-      }
-      
+      // Simplified overlay animation - opacity only
       if (overlay) {
         gsap.to(overlay, {
           duration: 0.3,
           opacity: 1,
           ease: this.customEasing.sparkBurst
         });
-        
-        const icon = overlay.querySelector('.gallery-icon');
-        if (icon) {
-          gsap.to(icon, {
-            duration: 0.3,
-            scale: 1.2,
-            rotation: 360,
-            ease: this.customEasing.sparkBurst
-          });
-        }
       }
     });
 
     item.addEventListener('mouseleave', () => {
+      // Use single transform3d for reset
       gsap.to(item, {
         duration: 0.5,
-        scale: 1,
-        rotation: 0,
+        transform: "translate3d(0, 0, 0) scale3d(1, 1, 1)",
         boxShadow: "0 15px 35px rgba(204, 0, 0, 0.3)",
-        ease: this.customEasing.emberFloat
+        ease: this.customEasing.emberFloat,
+        force3D: true,
+        onComplete: () => {
+          // Clean up will-change after animation
+          item.style.willChange = 'auto';
+        }
       });
       
-      if (img) {
-        gsap.to(img, {
-          duration: 0.5,
-          scale: 1,
-          filter: "brightness(1) contrast(1) saturate(1)",
-          ease: this.customEasing.emberFloat
-        });
-      }
-      
+      // Reset overlay opacity
       if (overlay) {
         gsap.to(overlay, {
           duration: 0.4,
           opacity: 0,
           ease: this.customEasing.emberFloat
         });
-        
-        const icon = overlay.querySelector('.gallery-icon');
-        if (icon) {
-          gsap.to(icon, {
-            duration: 0.4,
-            scale: 0.8,
-            rotation: 0,
-            ease: this.customEasing.emberFloat
-          });
-        }
       }
     });
   }

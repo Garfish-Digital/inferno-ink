@@ -53,6 +53,48 @@ const {
           const scrollAnimations = new ScrollAnimationController();
           window.scrollAnimations = scrollAnimations;
         }, 200);
+        
+        // Initialize mobile menu functionality
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        
+        if (mobileMenuToggle && mobileMenuOverlay) {
+          // Toggle menu on hamburger click
+          mobileMenuToggle.addEventListener('click', () => {
+            mobileMenuToggle.classList.toggle('active');
+            mobileMenuOverlay.classList.toggle('active');
+            // Prevent body scroll when menu is open
+            document.body.style.overflow = mobileMenuOverlay.classList.contains('active') ? 'hidden' : '';
+          });
+          
+          // Close menu when clicking on overlay
+          mobileMenuOverlay.addEventListener('click', (e) => {
+            if (e.target === mobileMenuOverlay) {
+              mobileMenuToggle.classList.remove('active');
+              mobileMenuOverlay.classList.remove('active');
+              document.body.style.overflow = '';
+            }
+          });
+          
+          // Close menu when clicking on nav links
+          mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+              mobileMenuToggle.classList.remove('active');
+              mobileMenuOverlay.classList.remove('active');
+              document.body.style.overflow = '';
+            });
+          });
+          
+          // Close menu on escape key
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileMenuOverlay.classList.contains('active')) {
+              mobileMenuToggle.classList.remove('active');
+              mobileMenuOverlay.classList.remove('active');
+              document.body.style.overflow = '';
+            }
+          });
+        }
       });
       
       // Cleanup on page unload
