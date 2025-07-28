@@ -792,15 +792,7 @@ class ScrollAnimationController {
       delay: 2 // After hero animation
     });
 
-    // Navigation scroll effects
-    ScrollTrigger.create({
-      start: "top -80",
-      end: 99999,
-      toggleClass: {
-        className: "scrolled",
-        targets: ".navbar"
-      }
-    });
+    // Navigation scroll effects - REMOVED to prevent height pinching
   }
 
   setupFallbackObserver() {

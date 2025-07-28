@@ -5,10 +5,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout>
   <!-- Navigation -->
   <nav class="navbar">
-    <div class="container">
-      <div class="nav-brand">
-        <a href="#hero">INFERNO INK</a>
-      </div>
+    <div class="container flex justify-end">
+        <div class="nav-icon">🔥</div>
       <ul class="nav-links">
         <li><a href="#services">Services</a></li>
         <li><a href="#artists">Artists</a></li>
@@ -24,7 +22,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <h1 class="hero-title">INFERNO INK</h1>
         <p class="hero-tagline">Hell Hath No Fury</p>
         <p class="hero-description">
-          Extreme tattoo artistry from those who know.
+          Extreme tattoo artistry from those who've been there.
         </p>
         <a href="#contact" class="hero-cta">Book Now</a>
       </div>
@@ -37,7 +35,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2 class="section-title">Our Specialties</h2>
       <div class="services-grid">
         <div class="service-card">
-          <div class="service-icon">🔥</div>
+          <div class="service-icon">✏️</div>
           <h3>Custom Designs</h3>
           <p>Unique, personalized artwork tailored to your vision and story. Our artists work closely with you to create one-of-a-kind pieces.</p>
         </div>
@@ -101,49 +99,41 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <div class="gallery-item">
           <img src="/images/gallery-1.jpg" alt="Custom Blackwork Tattoo Design" />
           <div class="gallery-overlay">
-            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-2.jpg" alt="Traditional Color Tattoo Art" />
           <div class="gallery-overlay">
-            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-3.jpg" alt="Realistic Portrait Tattoo" />
           <div class="gallery-overlay">
-            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-4.jpg" alt="Gothic Sleeve Tattoo Design" />
           <div class="gallery-overlay">
-            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-5.jpg" alt="Geometric Tattoo Pattern" />
           <div class="gallery-overlay">
-            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-6.jpg" alt="Fire-themed Tattoo Artwork" />
           <div class="gallery-overlay">
-            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-7.jpg" alt="Geometric Tattoo Pattern" />
           <div class="gallery-overlay">
-            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-8.jpg" alt="Fire-themed Tattoo Artwork" />
           <div class="gallery-overlay">
-            <!-- <span class="gallery-icon">🔍</span> -->
           </div>
         </div>
       </div>
@@ -194,27 +184,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     top: 0;
     left: 0;
     right: 0;
-    background: rgba($background, 0.95);
+    background: rgba($background, 0.5);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid rgba($primary, 0.2);
     z-index: 1000;
     transition: all 0.3s ease;
     
-    &.scrolled {
-      background: rgba($background, 0.98);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba($primary, 0.4);
-      box-shadow: 0 4px 20px rgba($background, 0.8);
-      
-      .container {
-        padding: $spacing-sm $container-padding;
-      }
-      
-      .nav-brand a {
-        font-size: 1.3rem;
-        text-shadow: 0 0 15px rgba($primary, 0.6);
-      }
-    }
 
     .container {
       display: flex;
@@ -240,6 +215,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           text-shadow: 0 0 10px rgba($primary, 0.5);
         }
       }
+    }
+
+    .nav-icon {
+        font-size: 2rem;
     }
 
     .nav-links {
@@ -324,6 +303,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       letter-spacing: 0.1em;
       text-shadow: 0 0 20px rgba($primary, 0.3);
       
+      // Initial hidden state to prevent flash
+      opacity: 0;
+      transform: translateY(150px) scale(0.5);
+      
       // Gradient text effect
       background: linear-gradient(135deg, $text 0%, $accent 50%, $primary 100%);
       background-clip: text;
@@ -340,6 +323,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       margin-bottom: $spacing-xl;
       font-weight: 500;
       letter-spacing: 0.05em;
+      
+      // Initial hidden state to prevent flash
+      opacity: 0;
+      transform: translateY(100px);
     }
 
     .hero-description {
@@ -350,6 +337,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
+      
+      // Initial hidden state to prevent flash
+      opacity: 0;
+      transform: translateY(80px);
     }
 
     .hero-cta {
@@ -365,6 +356,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       transition: $transition;
       position: relative;
       box-shadow: 0 8px 32px rgba($primary, 0.3);
+      
+      // Initial hidden state to prevent flash
+      opacity: 0;
+      transform: translateY(60px) scale(0.8);
       
       // Full fire gradient background
       background: radial-gradient(circle at 50% 50%, 
@@ -453,6 +448,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: $spacing-xl;
+      padding: 0 1rem;
     }
 
     .service-card {
@@ -528,6 +524,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: $spacing-2xl;
+      padding: 0 1rem;
     }
 
     .artist-card {
@@ -628,6 +625,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: $spacing-lg;
+      padding: 0 1rem;
     }
 
     .gallery-item {
@@ -851,7 +849,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       select {
         cursor: pointer;
+        // Safari-specific fixes for select height
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        min-height: 48px; // Explicit minimum height for mobile
+        height: auto; // Let it expand naturally
+        line-height: 1.5;
+        
+        // Add custom dropdown arrow
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.7)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+        padding-right: 40px; // Space for arrow
+        
+        // Safari-specific height fix
+        @supports (-webkit-appearance: none) {
+          height: 48px; // Fixed height for WebKit browsers
+          padding-top: 12px;
+          padding-bottom: 12px;
+        }
+        
+        // Style the placeholder option (first empty option)
+        option[value=""] {
+          color: $text-muted;
+        }
+        
+        // Ensure other options have normal text color
+        option:not([value=""]) {
+          color: $text;
+        }
+        
+        // When no option is selected (showing placeholder), use muted color
+        &:invalid {
+          color: $text-muted;
+        }
+        
+        // When a valid option is selected, use normal text color
+        &:valid {
+          color: $text;
+        }
       }
+
 
       textarea {
         resize: vertical;
@@ -991,6 +1031,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       .contact-content {
         grid-template-columns: 1fr;
         gap: $spacing-xl;
+      }
+      
+      // Mobile-specific form input styling
+      .contact-form {
+        input,
+        select,
+        textarea {
+          font-size: 16px; // Prevent zoom on iOS
+          min-height: 44px; // iOS recommended touch target
+        }
+        
+        select {
+          min-height: 50px; // Slightly larger for mobile taps
+          background-size: 20px; // Larger arrow for mobile
+          padding-right: 50px; // More space for larger arrow
+        }
       }
     }
 
