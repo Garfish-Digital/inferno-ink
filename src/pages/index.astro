@@ -41,7 +41,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <h1 class="hero-title">INFERNO INK</h1>
         <p class="hero-tagline">Hell Hath No Fury</p>
         <p class="hero-description">
-          Extreme tattoo artistry from those who've been there.
+          Extreme tattoo artistry from those who've been there and back.
         </p>
         <a href="#contact" class="hero-cta">Book Now</a>
       </div>
@@ -215,6 +215,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       justify-content: space-between;
       align-items: center;
       padding: $spacing-md $container-padding;
+      position: relative; // For dropdown positioning
     }
 
     .nav-brand {
@@ -331,60 +332,58 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .mobile-menu-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba($background, 0.98);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 200px;
+    background: rgba($background, 0.95);
     backdrop-filter: blur(20px);
+    border: 1px solid rgba($primary, 0.3);
+    border-radius: $border-radius-lg;
+    box-shadow: 0 10px 30px rgba($background, 0.8);
     z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-100%);
-    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: translateY(-10px) scale(0.95);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-origin: top right;
 
     &.active {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
 
     .mobile-nav-links {
       list-style: none;
-      padding: 0;
+      padding: $spacing-sm 0;
       margin: 0;
-      text-align: center;
 
       li {
-        margin: $spacing-xl 0;
         opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.3s ease;
+        transform: translateX(20px);
+        transition: all 0.2s ease;
 
-        &:nth-child(1) { transition-delay: 0.1s; }
-        &:nth-child(2) { transition-delay: 0.2s; }
-        &:nth-child(3) { transition-delay: 0.3s; }
-        &:nth-child(4) { transition-delay: 0.4s; }
+        &:nth-child(1) { transition-delay: 0.05s; }
+        &:nth-child(2) { transition-delay: 0.1s; }
+        &:nth-child(3) { transition-delay: 0.15s; }
+        &:nth-child(4) { transition-delay: 0.2s; }
       }
     }
 
     &.active .mobile-nav-links li {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(0);
     }
 
     .mobile-nav-link {
       font-family: $font-accent;
-      font-size: 2rem;
+      font-size: 1rem;
       font-weight: 600;
       text-decoration: none;
       color: $text;
       display: block;
-      padding: $spacing-lg $spacing-xl;
+      padding: $spacing-md $spacing-lg;
       border-radius: $border-radius;
       transition: all 0.3s ease;
       position: relative;

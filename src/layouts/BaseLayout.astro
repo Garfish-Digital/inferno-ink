@@ -61,19 +61,17 @@ const {
         
         if (mobileMenuToggle && mobileMenuOverlay) {
           // Toggle menu on hamburger click
-          mobileMenuToggle.addEventListener('click', () => {
+          mobileMenuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
             mobileMenuToggle.classList.toggle('active');
             mobileMenuOverlay.classList.toggle('active');
-            // Prevent body scroll when menu is open
-            document.body.style.overflow = mobileMenuOverlay.classList.contains('active') ? 'hidden' : '';
           });
           
-          // Close menu when clicking on overlay
-          mobileMenuOverlay.addEventListener('click', (e) => {
-            if (e.target === mobileMenuOverlay) {
+          // Close menu when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!mobileMenuToggle.contains(e.target) && !mobileMenuOverlay.contains(e.target)) {
               mobileMenuToggle.classList.remove('active');
               mobileMenuOverlay.classList.remove('active');
-              document.body.style.overflow = '';
             }
           });
           
@@ -82,7 +80,6 @@ const {
             link.addEventListener('click', () => {
               mobileMenuToggle.classList.remove('active');
               mobileMenuOverlay.classList.remove('active');
-              document.body.style.overflow = '';
             });
           });
           
@@ -91,7 +88,6 @@ const {
             if (e.key === 'Escape' && mobileMenuOverlay.classList.contains('active')) {
               mobileMenuToggle.classList.remove('active');
               mobileMenuOverlay.classList.remove('active');
-              document.body.style.overflow = '';
             }
           });
         }
