@@ -41,14 +41,42 @@ class MagicalCursorController {
   }
 
   init() {
-    this.setupElements();
-    this.setupCanvases();
-    this.setupThreeJS();
-    this.bindEvents();
-    this.startAnimation();
-    
-    // GSAP timeline for continuous magical effects
-    this.createMagicalTimeline();
+    // Ensure proper viewport dimensions before setup
+    this.waitForStableViewport().then(() => {
+      this.setupElements();
+      this.setupCanvases();
+      this.setupThreeJS();
+      this.bindEvents();
+      this.startAnimation();
+      
+      // GSAP timeline for continuous magical effects
+      this.createMagicalTimeline();
+    });
+  }
+
+  waitForStableViewport() {
+    return new Promise((resolve) => {
+      let resizeTimer;
+      const checkStability = () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          // Wait for one more frame to ensure dimensions are final
+          requestAnimationFrame(resolve);
+        }, 100);
+      };
+      
+      // Initial check
+      checkStability();
+      
+      // Also listen for any last-minute resize events
+      const onResize = () => checkStability();
+      window.addEventListener('resize', onResize, { once: true });
+      
+      // Cleanup after resolve
+      setTimeout(() => {
+        window.removeEventListener('resize', onResize);
+      }, 1000);
+    });
   }
 
   setupElements() {
@@ -190,20 +218,35 @@ class MagicalCursorController {
   }
 
   resizeCanvases() {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
+    // Ensure we have valid dimensions
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    
+    // Fallback to document dimensions if window dimensions are zero
+    if (width === 0 || height === 0) {
+      width = document.documentElement.clientWidth || 1280;
+      height = document.documentElement.clientHeight || 720;
+    }
+    
+    // Minimum dimensions to prevent canvas errors
+    width = Math.max(width, 320);
+    height = Math.max(height, 240);
     
     if (this.sparkleCanvas) {
       this.sparkleCanvas.width = width;
       this.sparkleCanvas.height = height;
+      this.sparkleCanvas.style.width = width + 'px';
+      this.sparkleCanvas.style.height = height + 'px';
     }
     
     if (this.emberCanvas) {
       this.emberCanvas.width = width;
       this.emberCanvas.height = height;
+      this.emberCanvas.style.width = width + 'px';
+      this.emberCanvas.style.height = height + 'px';
     }
     
-    if (this.renderer) {
+    if (this.renderer && this.camera) {
       this.renderer.setSize(width, height);
       this.camera.aspect = width / height;
       this.camera.updateProjectionMatrix();

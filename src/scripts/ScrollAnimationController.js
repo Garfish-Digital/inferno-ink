@@ -20,6 +20,8 @@ class ScrollAnimationController {
     
     this.animationTimelines = new Map();
     this.isInitialized = false;
+    this.isMobile = window.innerWidth <= 768;
+    this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     
     this.init();
   }
@@ -34,21 +36,44 @@ class ScrollAnimationController {
   }
 
   setupAnimations() {
-    this.setupInitialStates();
-    this.createHeroAnimations();
-    this.createSectionTitleAnimations();
-    this.createServiceCardAnimations();
-    this.createArtistAnimations();
-    this.createGalleryAnimations();
-    this.createContactAnimations();
-    this.createParallaxEffects();
-    this.createNavigationAnimations();
-    this.setupFallbackObserver(); // Add fallback
-    
-    this.isInitialized = true;
-    
-    // Refresh ScrollTrigger after all animations are set up
-    ScrollTrigger.refresh();
+    // Ensure viewport is stable before setting up complex animations
+    requestAnimationFrame(() => {
+      this.setupInitialStates();
+      
+      // Prioritize hero animations for immediate visibility
+      this.createHeroAnimations();
+      
+      // Defer non-critical animations to prevent layout blocking
+      requestIdleCallback(() => {
+        this.createSectionTitleAnimations();
+        this.createServiceCardAnimations();
+        this.createArtistAnimations();
+        
+        // Defer heavy gallery animations even further on mobile
+        if (this.isMobile) {
+          setTimeout(() => {
+            this.createGalleryAnimations();
+          }, 100);
+        } else {
+          this.createGalleryAnimations();
+        }
+        
+        this.createContactAnimations();
+        
+        // Skip parallax effects on mobile for performance
+        if (!this.isMobile && !this.isReducedMotion) {
+          this.createParallaxEffects();
+        }
+        
+        this.createNavigationAnimations();
+        this.setupFallbackObserver();
+        
+        this.isInitialized = true;
+        
+        // Refresh ScrollTrigger after all animations are set up
+        ScrollTrigger.refresh();
+      }, { timeout: 2000 }); // Fallback timeout
+    });
   }
 
   setupInitialStates() {

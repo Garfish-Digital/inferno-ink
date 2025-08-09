@@ -7,7 +7,7 @@ export interface Props {
 }
 
 const { 
-  title = "Inferno Ink | Hell Hath No Fury",
+  title = "Inferno Ink | Tattoo & Body Modification",
   description = "Premium tattoo artistry with fire and passion. Custom designs, experienced artists, premium quality."
 } = Astro.props;
 ---
@@ -17,21 +17,37 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <meta name="robots" content="noindex, nofollow" />
     <title>{title}</title>
   </head>
   <body>
-    <MagicalCursor />
+    <!-- Viewport stabilization styles -->
+    <style>
+      /* CSS-only viewport stabilization for mobile */
+      @media (max-width: 768px) {
+        html {
+          height: 100vh;
+          height: 100dvh;
+        }
+        body {
+          position: relative;
+          width: 100vw;
+          min-height: 100vh;
+          min-height: 100dvh;
+          overflow-x: hidden;
+        }
+        /* Ensure initial hero visibility without JavaScript */
+        .hero-title, .hero-tagline, .hero-description, .hero-cta {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      }
+    </style>
     
-    <!-- Garfish Digital Watermark Badge -->
-    <div class="garfish-badge">
-      <a href="https://garfishdigital.netlify.app" target="_blank" rel="noopener noreferrer">
-        ← return to <span>Garfish Digital</span>
-      </a>
-    </div>
+    <MagicalCursor />
     
     <main>
       <slot />
@@ -41,18 +57,57 @@ const {
       import MagicalCursorController from '../scripts/MagicalCursorController.js';
       import ScrollAnimationController from '../scripts/ScrollAnimationController.js';
       
-      document.addEventListener('DOMContentLoaded', () => {
-        // Initialize the magical cursor after DOM is loaded
-        setTimeout(() => {
-          const magicalCursor = new MagicalCursorController();
-          window.magicalCursor = magicalCursor;
-        }, 100);
+      // Viewport stabilization utility
+      function waitForViewportStability() {
+        return new Promise((resolve) => {
+          // Check if we're on mobile
+          const isMobile = window.innerWidth <= 768;
+          const baseDelay = isMobile ? 300 : 100; // Longer delay for mobile
+          
+          // Wait for initial paint
+          requestAnimationFrame(() => {
+            // Wait for layout calculations to complete
+            setTimeout(() => {
+              // Double-check viewport dimensions are stable
+              const initialWidth = window.innerWidth;
+              const initialHeight = window.innerHeight;
+              
+              setTimeout(() => {
+                const finalWidth = window.innerWidth;
+                const finalHeight = window.innerHeight;
+                
+                // If dimensions changed, wait a bit more
+                if (Math.abs(finalWidth - initialWidth) > 10 || Math.abs(finalHeight - initialHeight) > 10) {
+                  setTimeout(resolve, 200);
+                } else {
+                  resolve();
+                }
+              }, 100);
+            }, baseDelay);
+          });
+        });
+      }
+      
+      document.addEventListener('DOMContentLoaded', async () => {
+        // Wait for viewport to stabilize before initializing animations
+        await waitForViewportStability();
         
-        // Initialize scroll animations
+        // Initialize magical cursor with mobile detection
+        const isMobile = window.innerWidth <= 768;
+        
+        if (!isMobile) {
+          // Only initialize cursor on desktop
+          setTimeout(() => {
+            const magicalCursor = new MagicalCursorController();
+            window.magicalCursor = magicalCursor;
+          }, 50);
+        }
+        
+        // Initialize scroll animations with mobile-specific timing
         setTimeout(() => {
           const scrollAnimations = new ScrollAnimationController();
           window.scrollAnimations = scrollAnimations;
-        }, 200);
+        }, isMobile ? 100 : 50);
         
         // Initialize mobile menu functionality
         const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
