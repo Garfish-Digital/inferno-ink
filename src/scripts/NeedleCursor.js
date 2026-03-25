@@ -31,7 +31,7 @@ class NeedleCursor {
       width: '10px',
       height: '10px',
       borderRadius: '50%',
-      background: 'radial-gradient(circle, #FFF2CC 0%, #FF6B35 60%, #CC2200 100%)',
+      background: 'radial-gradient(circle, #FFFFFF 0%, #FFD699 40%, #FF6B35 100%)',
       mixBlendMode: 'difference',
       pointerEvents: 'none',
       zIndex: '10001',
@@ -191,15 +191,15 @@ class NeedleCursor {
     // ── Option A: Dot flicker ──
     // Layered sine waves for organic opacity + scale oscillation
     const f = this.frameCount;
-    const flicker = 0.82
-      + Math.sin(f * 0.47) * 0.08
-      + Math.sin(f * 1.13) * 0.05
-      + Math.sin(f * 2.71) * 0.04;
+    const flicker = 0.92
+      + Math.sin(f * 0.12) * 0.04
+      + Math.sin(f * 0.3) * 0.025
+      + Math.sin(f * 0.7) * 0.015;
     this.dot.style.opacity = Math.max(0.65, Math.min(1, flicker));
 
     const breathe = 1.0
-      + Math.sin(f * 0.31) * 0.03
-      + Math.sin(f * 0.83) * 0.02;
+      + Math.sin(f * 0.08) * 0.015
+      + Math.sin(f * 0.2) * 0.01;
     // Only apply breathe when not in a GSAP scale animation (hover/click)
     if (!this.isHovering && !this._isClicking) {
       gsap.set(this.dot, { scale: breathe });

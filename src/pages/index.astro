@@ -513,13 +513,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           text-transform: uppercase;
           color: $bone;
           transform: translateY(12px);
-          transition: transform $t-base $ease-heat;
+          transition: transform $t-slow $ease-heat;
         }
       }
 
       &:hover {
         img {
-          transform: scale(1.08);
+          transform: scale(1.03);
           filter: brightness(0.8) contrast(1.1);
         }
 
@@ -736,17 +736,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       .services-grid {
         grid-template-columns: 1fr;
       }
+        .service-card {
+            margin: $space-1;
+        }
     }
 
     .artists {
       .artists-grid {
         grid-template-columns: 1fr;
+        padding: 0 $space-12;
       }
     }
 
     .gallery {
       .gallery-grid {
         grid-template-columns: 1fr;
+        padding: 0 $space-12;
+        gap: $space-16;
       }
     }
 
@@ -754,6 +760,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       .contact-content {
         grid-template-columns: 1fr;
         gap: $space-8;
+        padding: 0 $space-4;
       }
       
       // Mobile-specific form input styling
