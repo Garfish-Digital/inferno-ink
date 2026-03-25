@@ -587,3 +587,8 @@ Here are all the adjustable values in HellFloor.js:
   - Alpha output: glow * 0.45 — max opacity ~45%
   - Deep color: rgb(0.545, 0.0, 0.0) — #8B0000
   - Core color: rgb(0.8, 0.133, 0.0) — #CC2200
+
+
+
+
+.to('.hero-cta', {y: 0,opacity: 1,scale: 1,duration: 0.8,ease: 'power2.out'}, 1.1);

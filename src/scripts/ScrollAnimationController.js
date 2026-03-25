@@ -61,7 +61,7 @@ class ScrollAnimationController {
     gsap.set('.hero-title', { clipPath: 'inset(0 100% 0 0)' });
     gsap.set('.hero-tagline', { y: 30, opacity: 0 });
     gsap.set('.hero-description', { y: 30, opacity: 0 });
-    gsap.set('.hero-cta', { y: 30, opacity: 0, scale: 0.98 });
+    gsap.set('.hero-cta', { opacity: 0 });
 
     // Section titles
     gsap.set('.section-title', { clipPath: 'inset(0 100% 0 0)' });
@@ -105,14 +105,12 @@ class ScrollAnimationController {
       duration: 1,
       ease: 'power2.out'
     }, 0.9)
-    // 4. CTA — fade-rise + subtle scale, 1.1s after title begins
+    // 4. CTA — pure linear fade-in, no easing curve
     .to('.hero-cta', {
-      y: 0,
       opacity: 1,
-      scale: 1,
-      duration: 0.8,
-      ease: 'power2.out',
-    }, 1.1);
+      duration: 2,
+      ease: 'none'
+    }, 1.3);
 
     this.animationTimelines.set('hero', heroTl);
   }

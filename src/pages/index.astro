@@ -46,6 +46,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div class="container">
       <h2 class="section-title">Master Artists</h2>
       <div class="artists-grid">
+        <div class="artist-card artist-featured">
+          <div class="artist-image">
+            <img src="/images/artist-phoenix.jpg" alt="Lou Martinez - Color & Traditional Tattoo Artist" />
+          </div>
+          <h3>Lou Martinez</h3>
+          <p class="artist-specialty">Color & Traditional</p>
+          <p>Award-winning artist known for vibrant colors and traditional American style. Bringing classic tattoo artistry to modern designs.</p>
+        </div>
         <div class="artist-card">
           <div class="artist-image">
             <img src="/images/artist-raven.jpg" alt="Avery Blackthorne - Blackwork & Gothic Tattoo Artist" />
@@ -53,14 +61,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <h3>Avery Blackthorne</h3>
           <p class="artist-specialty">Blackwork & Gothic</p>
           <p>15+ years specializing in dark art and intricate blackwork designs. Master of gothic imagery and bold geometric patterns.</p>
-        </div>
-        <div class="artist-card">
-          <div class="artist-image">
-            <img src="/images/artist-phoenix.jpg" alt="Lou Martinez - Color & Traditional Tattoo Artist" />
-          </div>
-          <h3>Lou Martinez</h3>
-          <p class="artist-specialty">Color & Traditional</p>
-          <p>Award-winning artist known for vibrant colors and traditional American style. Bringing classic tattoo artistry to modern designs.</p>
         </div>
         <div class="artist-card">
           <div class="artist-image">
@@ -247,7 +247,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       border: 2px solid transparent;
       border-image: linear-gradient(135deg, $heat-deep, $heat-bright) 1;
       border-radius: 0; // border-image doesn't work with border-radius
-      transition: all $t-base $ease-heat, box-shadow $t-base $ease-heat, transform $t-base $ease-heat;
+      transition: color $t-base $ease-heat;
 
       &:hover {
         color: $heat-glow;
@@ -274,21 +274,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: linear-gradient(180deg, $cinder 0%, $ash 100%);
 
     .section-title {
-                font-family: $font-display;
+      font-family: $font-display;
       text-align: center;
-      margin-bottom: $space-24;
+      margin-bottom: $space-32;
       color: $bone;
     }
 
     .services-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: $space-8;
-      padding: 0 1rem;
+      grid-template-columns: repeat(2, 1fr);
+      gap: $space-12;
+      padding: 0 $space-12;
     }
 
     .service-card {
       background: linear-gradient(135deg, $cinder 0%, $iron 100%);
+      margin: $space-12;
       padding: $space-12;
       border-radius: $radius-base;
       text-align: center;
@@ -341,17 +342,29 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: linear-gradient(180deg, $ash 0%, $cinder 100%);
 
     .section-title {
-                font-family: $font-display;
+      font-family: $font-display;
       text-align: center;
-      margin-bottom: $space-24;
+      margin-bottom: $space-32;
       color: $bone;
     }
 
     .artists-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: $space-12;
       padding: 0 1rem;
+      justify-items: center;
+    }
+
+    .artist-featured {
+      grid-column: 1 / -1;
+      max-width: 480px;
+      width: 100%;
+    }
+
+    .artist-card:not(.artist-featured) {
+      max-width: 480px;
+      width: 100%;
     }
 
     .artist-card {
@@ -445,24 +458,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     background: linear-gradient(180deg, $cinder 0%, $ash 100%);
 
     .section-title {
-                font-family: $font-display;
+      font-family: $font-display;
       text-align: center;
-      margin-bottom: $space-24;
+      margin-bottom: $space-32;
       color: $bone;
     }
 
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: $space-4;
-      padding: 0 1rem;
-
-      @media (max-width: 1024px) {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      @media (max-width: 640px) {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      grid-template-columns: repeat(2, 1fr);
+      gap: $space-32;
+      padding: 0 $space-16;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .gallery-item {
@@ -732,6 +740,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     .artists {
       .artists-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .gallery {
+      .gallery-grid {
         grid-template-columns: 1fr;
       }
     }
