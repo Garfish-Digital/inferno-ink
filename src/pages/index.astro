@@ -3,38 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout>
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="container flex justify-end">
-        <div class="nav-icon">🔥</div>
-      
-      <!-- Desktop Navigation -->
-      <ul class="nav-links">
-        <li><a href="#services">Services</a></li>
-        <li><a href="#artists">Artists</a></li>
-        <li><a href="#gallery">Gallery</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-
-      <!-- Mobile Hamburger Button -->
-      <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-        <span class="hamburger-line"></span>
-      </button>
-    </div>
-
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay">
-      <ul class="mobile-nav-links">
-        <li><a href="#services" class="mobile-nav-link">Services</a></li>
-        <li><a href="#artists" class="mobile-nav-link">Artists</a></li>
-        <li><a href="#gallery" class="mobile-nav-link">Gallery</a></li>
-        <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
-
   <section id="hero" class="hero">
     <div class="container">
       <div class="hero-content">
@@ -54,22 +22,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2 class="section-title">Our Specialties</h2>
       <div class="services-grid">
         <div class="service-card">
-          <div class="service-icon">🖊️</div>
           <h3>Custom Designs</h3>
           <p>Unique, personalized artwork tailored to your vision and story. Our artists work closely with you to create one-of-a-kind pieces.</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">🔱</div>
           <h3>Traditional</h3>
           <p>Classic American traditional with bold lines and vibrant colors. Timeless designs that honor tattoo heritage.</p>
         </div>
         <div class="service-card">
-            <div class="service-icon">🌑</div>
             <h3>Blackwork</h3>
             <p>Striking black ink designs from geometric patterns to illustrative styles. Bold, dramatic artwork that makes a statement.</p>
         </div>
         <div class="service-card">
-          <div class="service-icon">⚡</div>
           <h3>Cover-ups</h3>
           <p>Transform old tattoos into stunning new masterpieces. Expert cover-up artistry that breathes new life into existing ink.</p>
         </div>
@@ -84,7 +48,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="artists-grid">
         <div class="artist-card">
           <div class="artist-image">
-            <img src="/images/artist-raven.jpg" alt="Raven Blackthorne - Blackwork & Gothic Tattoo Artist" />
+            <img src="/images/artist-raven.jpg" alt="Avery Blackthorne - Blackwork & Gothic Tattoo Artist" />
           </div>
           <h3>Avery Blackthorne</h3>
           <p class="artist-specialty">Blackwork & Gothic</p>
@@ -92,15 +56,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <div class="artist-card">
           <div class="artist-image">
-            <img src="/images/artist-phoenix.jpg" alt="Phoenix Martinez - Color & Traditional Tattoo Artist" />
+            <img src="/images/artist-phoenix.jpg" alt="Lou Martinez - Color & Traditional Tattoo Artist" />
           </div>
-          <h3>Pepe Martinez</h3>
+          <h3>Lou Martinez</h3>
           <p class="artist-specialty">Color & Traditional</p>
           <p>Award-winning artist known for vibrant colors and traditional American style. Bringing classic tattoo artistry to modern designs.</p>
         </div>
         <div class="artist-card">
           <div class="artist-image">
-            <img src="/images/artist-ash.jpg" alt="Ash Steele - Realism & Portrait Tattoo Artist" />
+            <img src="/images/artist-ash.jpg" alt="Ashton Starke - Realism & Portrait Tattoo Artist" />
           </div>
           <h3>Ashton Starke</h3>
           <p class="artist-specialty">Realism & Portraits</p>
@@ -117,43 +81,51 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="gallery-grid">
         <div class="gallery-item">
           <img src="/images/gallery-1.jpg" alt="Custom Blackwork Tattoo Design" />
-          <div class="gallery-overlay">
-          </div>
+          <!-- <div class="gallery-overlay">
+            <span class="overlay-style">Blackwork</span>
+          </div> -->
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-2.jpg" alt="Traditional Color Tattoo Art" />
-          <div class="gallery-overlay">
-          </div>
+          <!-- <div class="gallery-overlay">
+            <span class="overlay-style">Traditional</span>
+          </div> -->
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-3.jpg" alt="Realistic Portrait Tattoo" />
-          <div class="gallery-overlay">
-          </div>
+          <!-- <div class="gallery-overlay">
+            <span class="overlay-style">Realism</span>
+          </div> -->
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-4.jpg" alt="Gothic Sleeve Tattoo Design" />
-          <div class="gallery-overlay">
-          </div>
+          <!-- <div class="gallery-overlay">
+            <span class="overlay-style">Gothic</span>
+          </div> -->
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-5.jpg" alt="Geometric Tattoo Pattern" />
-          <div class="gallery-overlay">
-          </div>
+          <!-- <div class="gallery-overlay">
+            <span class="overlay-style">Geometric</span>
+          </div> -->
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-6.jpg" alt="Fire-themed Tattoo Artwork" />
-          <div class="gallery-overlay">
-          </div>
+          <!-- <div class="gallery-overlay">
+            <span class="overlay-style">Illustrative</span>
+          </div> -->
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-7.jpg" alt="Geometric Tattoo Pattern" />
-          <div class="gallery-overlay">
-          </div>
+          <!-- <div class="gallery-overlay">
+            <span class="overlay-style">Fine Line</span>
+          </div> -->
         </div>
         <div class="gallery-item">
           <img src="/images/gallery-8.jpg" alt="Fire-themed Tattoo Artwork" />
-          <div class="gallery-overlay">
-          </div>
+          <!-- <div class="gallery-overlay">
+            <span class="overlay-style">Cover-up</span>
+          </div> -->
         </div>
       </div>
     </div>
@@ -161,13 +133,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   <!-- Contact Section -->
   <section id="contact" class="section contact">
+    <canvas id="hell-canvas"></canvas>
     <div class="container">
       <h2 class="section-title">Book Your Session</h2>
       <div class="contact-content">
         <div class="contact-info">
-          <h3>Visit Us</h3>
-          <p>666 Fire Street<br>Hell's Kitchen, NY 10019</p>
-          <p><strong>Phone:</strong> (555) INK-FIRE</p>
+          <h3>Reach Us</h3>
+          <p>537 Paper Street<br>Wilmington, CA 90744</p>
+          <p><strong>Phone:</strong> (555) INF-ERNO</p>
           <p><strong>Email:</strong> book@infernoink.com</p>
           <div class="hours">
             <h4>Studio Hours</h4>
@@ -181,9 +154,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <input type="tel" placeholder="Phone Number">
             <select required>
               <option value="">Select Your Artist</option>
-              <option value="raven">Raven Blackthorne</option>
-              <option value="phoenix">Phoenix Martinez</option>
-              <option value="ash">Ash Steele</option>
+              <option value="avery">Avery Blackthorne</option>
+              <option value="lou">Lou Martinez</option>
+              <option value="ashton">Ashton Starke</option>
             </select>
             <textarea placeholder="Describe your tattoo idea..." rows="5" required></textarea>
             <button type="submit" class="submit-btn">Send Message</button>
@@ -197,250 +170,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <style lang="scss">
   @use '../styles/_variables' as *;
 
-  // Navigation
-  .navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba($background, 0.5);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba($primary, 0.2);
-    z-index: 1000;
-    transition: all 0.3s ease;
-    
-
-    .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: $spacing-md $container-padding;
-      position: relative; // For dropdown positioning
-    }
-
-    .nav-brand {
-      a {
-        font-family: $font-accent;
-        font-size: 1.5rem;
-        font-weight: 700;
-        color: $text;
-        text-decoration: none;
-        letter-spacing: 0.1em;
-        background: linear-gradient(135deg, $text 0%, $accent 50%, $primary 100%);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        
-        &:hover {
-          text-shadow: 0 0 10px rgba($primary, 0.5);
-        }
-      }
-    }
-
-    .nav-icon {
-        font-size: 2rem;
-    }
-
-    .nav-links {
-      display: flex;
-      list-style: none;
-      gap: $spacing-xl;
-      margin: 0;
-      padding: 0;
-
-      li {
-        a {
-          color: $text-dim;
-          text-decoration: none;
-          font-weight: 500;
-          transition: $transition;
-          position: relative;
-          padding: $spacing-sm 0;
-
-          &::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, $primary, $accent);
-            transition: $transition;
-          }
-
-          &:hover {
-            color: $accent;
-
-            &::after {
-              width: 100%;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // Mobile Hamburger Menu Styles
-  .mobile-menu-toggle {
-    display: none;
-    flex-direction: column;
-    justify-content: space-around;
-    width: 32px;
-    height: 32px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 4px;
-    z-index: 1001;
-    transition: $transition;
-
-    .hamburger-line {
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, $primary, $accent);
-      border-radius: 2px;
-      transition: all 0.3s ease;
-      transform-origin: center;
-    }
-
-    &:hover .hamburger-line {
-      background: radial-gradient(circle at 50% 50%, 
-        $fire-red 0%, 
-        $fire-orange 25%, 
-        $fire-yellow 50%, 
-        $ember-glow 75%, 
-        $fire-red 100%);
-      background-size: 200% 200%;
-      animation: fireRadialMove 2s ease-in-out infinite;
-      box-shadow: 0 0 8px rgba($primary, 0.5);
-    }
-
-    // Active state (menu open)
-    &.active {
-      .hamburger-line:nth-child(1) {
-        transform: rotate(45deg) translate(8px, 8px);
-      }
-      
-      .hamburger-line:nth-child(2) {
-        opacity: 0;
-      }
-      
-      .hamburger-line:nth-child(3) {
-        transform: rotate(-45deg) translate(8px, -8px);
-      }
-    }
-  }
-
-  .mobile-menu-overlay {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    width: 200px;
-    background: rgba($background, 0.95);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba($primary, 0.3);
-    border-radius: $border-radius-lg;
-    box-shadow: 0 10px 30px rgba($background, 0.8);
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px) scale(0.95);
-    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform-origin: top right;
-
-    &.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0) scale(1);
-    }
-
-    .mobile-nav-links {
-      list-style: none;
-      padding: $spacing-sm 0;
-      margin: 0;
-
-      li {
-        opacity: 0;
-        transform: translateX(20px);
-        transition: all 0.2s ease;
-
-        &:nth-child(1) { transition-delay: 0.05s; }
-        &:nth-child(2) { transition-delay: 0.1s; }
-        &:nth-child(3) { transition-delay: 0.15s; }
-        &:nth-child(4) { transition-delay: 0.2s; }
-      }
-    }
-
-    &.active .mobile-nav-links li {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    .mobile-nav-link {
-      font-family: $font-accent;
-      font-size: 1rem;
-      font-weight: 600;
-      text-decoration: none;
-      color: $text;
-      display: block;
-      padding: $spacing-md $spacing-lg;
-      border-radius: $border-radius;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-
-      // Fiery gradient background (hidden initially)
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: radial-gradient(circle at 50% 50%, 
-          $fire-red 0%, 
-          $fire-orange 25%, 
-          $fire-yellow 50%, 
-          $ember-glow 75%, 
-          $fire-red 100%);
-        background-size: 300% 300%;
-        animation: fireRadialMove 8s ease-in-out infinite;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        z-index: -1;
-      }
-
-      // Fiery gradient text
-      &:hover {
-        background: radial-gradient(circle at 50% 50%, 
-          $fire-red 0%, 
-          $fire-orange 25%, 
-          $fire-yellow 50%, 
-          $ember-glow 75%, 
-          $fire-red 100%);
-        background-size: 300% 300%;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: fireRadialMove 8s ease-in-out infinite;
-        transform: scale(1.05);
-        text-shadow: 0 0 20px rgba($primary, 0.5);
-
-        &::before {
-          opacity: 0.1;
-        }
-      }
-    }
-  }
-
   .hero {
-    padding-top: 80px; // Account for fixed navbar
-    min-height: 90vh;
+    height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(135deg, $background 0%, $background-light 100%);
+    background: linear-gradient(135deg, $ash 0%, $cinder 100%);
     position: relative;
     overflow: hidden;
 
@@ -452,8 +188,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       left: 0;
       right: 0;
       bottom: 0;
-      background: radial-gradient(circle at 30% 50%, rgba($primary, 0.1) 0%, transparent 50%),
-                  radial-gradient(circle at 70% 50%, rgba($accent, 0.05) 0%, transparent 50%);
+      background: radial-gradient(circle at 30% 50%, rgba($heat-core, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 50%, rgba($heat-mid, 0.05) 0%, transparent 50%);
       pointer-events: none;
     }
 
@@ -468,169 +204,96 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     }
 
     .hero-title {
-      font-family: $font-accent;
+      font-family: $font-display;
       font-size: clamp(3rem, 8vw, 6rem);
       font-weight: 700;
-      color: $text;
-      margin-bottom: $spacing-lg;
+      color: $bone;
+      margin-bottom: $space-6;
       letter-spacing: 0.1em;
-      text-shadow: 0 0 20px rgba($primary, 0.3);
-      
-      // Initial hidden state to prevent flash
-      opacity: 0;
-      transform: translateY(150px) scale(0.5);
-      
-      // Gradient text effect
-      background: linear-gradient(135deg, $text 0%, $accent 50%, $primary 100%);
-      background-clip: text;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-size: 200% 200%;
-      animation: gradientShift 3s ease-in-out infinite;
     }
 
     .hero-tagline {
-      font-family: $font-heading;
+      font-family: $font-display;
       font-size: clamp(1.25rem, 3vw, 2rem);
-      color: $accent;
-      margin-bottom: $spacing-xl;
+      color: $heat-mid;
+      margin-bottom: $space-8;
       font-weight: 500;
       letter-spacing: 0.05em;
-      
-      // Initial hidden state to prevent flash
-      opacity: 0;
-      transform: translateY(100px);
     }
 
     .hero-description {
       font-size: 1.125rem;
-      color: $text-dim;
-      margin-bottom: $spacing-2xl;
+      color: $bone-dim;
+      margin-bottom: $space-12;
       line-height: 1.8;
       max-width: 600px;
       margin-left: auto;
       margin-right: auto;
       padding: 0 1rem;
-      // Initial hidden state to prevent flash
-      opacity: 0;
-      transform: translateY(80px);
     }
 
     .hero-cta {
       display: inline-block;
-      padding: $spacing-lg $spacing-2xl;
-      width: 25vw;
-      font-family: $font-accent;
-      font-weight: 700;
-      font-size: 1.25rem; // Enlarged text
+      padding: $space-4 $space-12;
+      font-family: $font-body;
+      font-weight: 600;
+      font-size: 1rem;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      border-radius: $border-radius;
-      transition: $transition;
-      position: relative;
-      box-shadow: 0 8px 32px rgba($primary, 0.3);
-      
-      // Initial hidden state to prevent flash
-      opacity: 0;
-      transform: translateY(60px) scale(0.8);
-      
-      // Full fire gradient background
-      background: radial-gradient(circle at 50% 50%, 
-        $fire-red 0%, 
-        $fire-orange 25%, 
-        $fire-yellow 50%, 
-        $ember-glow 75%, 
-        $fire-red 100%);
-      background-size: 300% 300%;
-      animation: fireRadialMove 8s ease-in-out infinite;
-      
-      // Black background to hide gradient except text/border
-      &::before {
-        content: '';
-        position: absolute;
-        top: 4px;
-        left: 4px;
-        right: 4px;
-        bottom: 4px;
-        background: $background;
-        border-radius: calc($border-radius - 4px);
-        z-index: 1;
-      }
-      
-      // Fire gradient text on top
-      &::after {
-        content: 'Book Now';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: radial-gradient(circle at 50% 50%, 
-          $fire-red 0%, 
-          $fire-orange 25%, 
-          $fire-yellow 50%, 
-          $ember-glow 75%, 
-          $fire-red 100%);
-        background-size: 300% 300%;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: fireRadialMove 8s ease-in-out infinite;
-        font-family: inherit;
-        font-weight: inherit;
-        font-size: inherit;
-        text-transform: inherit;
-        letter-spacing: inherit;
-        z-index: 2;
-      }
+      letter-spacing: $tracking-wide;
+      color: $bone;
+    //   color: $heat-mid;
+      text-decoration: none;
+      background: $ash;
+      border: 2px solid transparent;
+      border-image: linear-gradient(135deg, $heat-deep, $heat-bright) 1;
+      border-radius: 0; // border-image doesn't work with border-radius
+      transition: all $t-base $ease-heat, box-shadow $t-base $ease-heat, transform $t-base $ease-heat;
 
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 12px 40px rgba($primary, 0.4);
+        color: $heat-glow;
+        border-image: linear-gradient(90deg, $heat-deep, $heat-bright) 1;
       }
 
       &:active {
-        transform: translateY(0);
+        color: $heat-mid;
       }
     }
   }
 
-  @keyframes gradientShift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
+  // Section vertical spacing (global.scss .section is Astro-scoped to BaseLayout, doesn't reach here)
+  .services,
+  .artists,
+  .gallery,
+  .contact {
+    padding-top: $space-32;
+    padding-bottom: $space-32;
   }
 
   // Services Section
   .services {
-    background: linear-gradient(180deg, $background-light 0%, $background 100%);
+    background: linear-gradient(180deg, $cinder 0%, $ash 100%);
 
     .section-title {
+                font-family: $font-display;
       text-align: center;
-      margin-bottom: $spacing-3xl;
-      color: $text;
+      margin-bottom: $space-24;
+      color: $bone;
     }
 
     .services-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: $spacing-xl;
+      gap: $space-8;
       padding: 0 1rem;
     }
 
     .service-card {
-      background: linear-gradient(135deg, $background-light 0%, $background-lighter 100%);
-      padding: $spacing-2xl;
-      border-radius: $border-radius-lg;
+      background: linear-gradient(135deg, $cinder 0%, $iron 100%);
+      padding: $space-12;
+      border-radius: $radius-base;
       text-align: center;
-      border: 1px solid rgba($primary, 0.2);
-      transition: $transition;
+      border: 1px solid rgba($heat-core, 0.2);
+      transition: all $t-slow $ease-heat;
       position: relative;
       overflow: hidden;
 
@@ -641,42 +304,32 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(135deg, rgba($primary, 0.05) 0%, rgba($accent, 0.05) 100%);
+        background: linear-gradient(135deg, rgba($heat-core, 0.05) 0%, rgba($heat-mid, 0.05) 100%);
         opacity: 0;
-        transition: $transition;
+        transition: all $t-slow $ease-heat;
       }
 
       &:hover {
-        transform: translateY(-5px);
-        border-color: rgba($primary, 0.4);
-        box-shadow: $shadow-lg;
+        // transform: translateY(-5px);
+        border-color: rgba($heat-core, 0.4);
+        // box-shadow: 0 10px 25px rgba($void, 0.2);
 
         &::before {
           opacity: 1;
         }
 
-        .service-icon {
-          transform: scale(1.1);
-        }
-      }
-
-      .service-icon {
-        font-size: 3rem;
-        margin-bottom: $spacing-lg;
-        transition: $transition;
-        filter: grayscale(0.5);
       }
 
       h3 {
-        font-family: $font-accent;
-        color: $accent;
-        margin-bottom: $spacing-md;
+        font-family: $font-display;
+        color: $heat-mid;
+        margin-bottom: $space-4;
         font-size: 1.5rem;
         font-weight: 600;
       }
 
       p {
-        color: $text-dim;
+        color: $bone-dim;
         line-height: 1.6;
         margin-bottom: 0;
       }
@@ -685,36 +338,51 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   // Artists Section
   .artists {
-    background: linear-gradient(180deg, $background 0%, $background-light 100%);
+    background: linear-gradient(180deg, $ash 0%, $cinder 100%);
 
     .section-title {
+                font-family: $font-display;
       text-align: center;
-      margin-bottom: $spacing-3xl;
-      color: $text;
+      margin-bottom: $space-24;
+      color: $bone;
     }
 
     .artists-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: $spacing-2xl;
+      gap: $space-12;
       padding: 0 1rem;
     }
 
     .artist-card {
       text-align: center;
-      padding: $spacing-xl;
-      background: rgba($background-lighter, 0.5);
-      border-radius: $border-radius-lg;
-      transition: $transition;
-      border: 1px solid rgba($accent, 0.2);
+      padding: $space-8;
+      background: rgba($iron, 0.5);
+      border-radius: $radius-base;
+      transition: all $t-base $ease-heat;
+      border: 1px solid rgba($heat-mid, 0.2);
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba($heat-core, 0.05) 0%, rgba($heat-mid, 0.05) 100%);
+        opacity: 0;
+        transition: all $t-slow $ease-heat;
+      }
 
       &:hover {
         transform: scale(1.02);
-        border-color: rgba($accent, 0.4);
-        box-shadow: $shadow-lg;
+        border-color: rgba($heat-mid, 0.4);
+        // box-shadow: 0 10px 25px rgba($void, 0.2);
 
-        .artist-image {
-          box-shadow: 0 0 30px rgba($primary, 0.4);
+        &::before {
+          opacity: 1;
         }
       }
 
@@ -722,19 +390,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         width: 150px;
         height: 150px;
         border-radius: 50%;
-        margin: 0 auto $spacing-lg;
-        border: 3px solid rgba($accent, 0.3);
-        transition: $transition;
+        margin: 0 auto $space-6;
+        border: 3px solid rgba($heat-mid, 0.3);
+        transition: all $t-base $ease-heat;
         position: relative;
         overflow: hidden;
-        background: linear-gradient(135deg, $primary 0%, $accent 100%);
+        background: linear-gradient(135deg, $heat-core 0%, $heat-mid 100%);
 
         img {
           width: 100%;
           height: 100%;
           object-fit: cover;
           object-position: center;
-          transition: $transition;
+          transition: all $t-slow $ease-heat;
           border-radius: 50%;
           position: relative;
           z-index: 1; // Above placeholder
@@ -745,39 +413,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           filter: brightness(1.1) contrast(1.1);
         }
 
-        // Fallback for missing images - behind the actual image
-        &::before {
-          content: '👤';
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          font-size: 4rem;
-          opacity: 0.7;
-          z-index: 0; // Behind the image
-          pointer-events: none;
-        }
       }
 
       h3 {
-        font-family: $font-accent;
-        color: $text;
-        margin-bottom: $spacing-sm;
+        font-family: $font-display;
+        color: $bone;
+        margin-bottom: $space-2;
         font-size: 1.5rem;
         font-weight: 600;
       }
 
       .artist-specialty {
-        color: $accent;
+        color: $heat-mid;
         font-weight: 600;
-        margin-bottom: $spacing-md;
+        margin-bottom: $space-4;
         text-transform: uppercase;
         letter-spacing: 0.05em;
         font-size: 0.9rem;
       }
 
       p:last-child {
-        color: $text-dim;
+        color: $bone-dim;
         line-height: 1.6;
         margin-bottom: 0;
       }
@@ -786,54 +442,44 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
   // Gallery Section
   .gallery {
-    background: linear-gradient(180deg, $background-light 0%, $background 100%);
+    background: linear-gradient(180deg, $cinder 0%, $ash 100%);
 
     .section-title {
+                font-family: $font-display;
       text-align: center;
-      margin-bottom: $spacing-3xl;
-      color: $text;
+      margin-bottom: $space-24;
+      color: $bone;
     }
 
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: $spacing-lg;
+      grid-template-columns: repeat(4, 1fr);
+      gap: $space-4;
       padding: 0 1rem;
+
+      @media (max-width: 1024px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      @media (max-width: 640px) {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     .gallery-item {
       aspect-ratio: 1;
-      border-radius: $border-radius-lg;
-      transition: all 0.3s ease;
+      border-radius: $radius-base;
       cursor: pointer;
       position: relative;
       overflow: hidden;
-      background: linear-gradient(135deg, $primary 0%, $accent 100%); // Fallback background
-      
-      // Ensure visibility and prevent layout issues
-      opacity: 1;
-      transform: scale(1);
-      visibility: visible;
-      
-      // CSS Fallback animation for when JS doesn't load
-      animation: galleryFadeIn 0.8s ease-out forwards;
-      
-      // Stagger the CSS fallback
-      @for $i from 1 through 6 {
-        &:nth-child(#{$i}) {
-          animation-delay: #{($i - 1) * 0.1}s;
-        }
-      }
+      background: $cinder;
 
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         object-position: center;
-        transition: $transition;
-        border-radius: $border-radius-lg;
-        position: relative;
-        z-index: 1;
+        transition: transform $t-base $ease-heat, filter $t-base $ease-heat;
+        border-radius: $radius-base;
       }
 
       .gallery-overlay {
@@ -842,144 +488,110 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         left: 0;
         right: 0;
         bottom: 0;
-        background: rgba($background, 0.7);
+        background: rgba($void, 0.6);
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         justify-content: center;
+        padding-bottom: $space-6;
         opacity: 0;
-        transition: all 0.3s ease;
+        transition: opacity $t-base $ease-heat;
         z-index: 2;
-        border-radius: $border-radius-lg;
+        border-radius: $radius-base;
 
-        .gallery-icon {
-          font-size: 3rem;
-          filter: grayscale(0.3) sepia(1) hue-rotate(0deg) saturate(2) brightness(1.2);
-          transform: scale(0.5);
-          transition: all 0.3s ease;
+        .overlay-style {
+          font-family: $font-display;
+          font-size: $size-sm;
+          letter-spacing: $tracking-widest;
+          text-transform: uppercase;
+          color: $bone;
+          transform: translateY(12px);
+          transition: transform $t-base $ease-heat;
         }
       }
 
-      // Fallback icon for missing images (behind image)
-      &::before {
-        content: '🎨';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 4rem;
-        opacity: 0.7;
-        z-index: 0; // Behind image
-      }
-
       &:hover {
-        transform: scale(1.05);
-        box-shadow: 0 20px 40px rgba($primary, 0.4);
-
         img {
-          transform: scale(1.1);
-          filter: brightness(0.8) contrast(1.2);
+          transform: scale(1.08);
+          filter: brightness(0.8) contrast(1.1);
         }
 
         .gallery-overlay {
           opacity: 1;
-          background: rgba($background, 0.5);
 
-          .gallery-icon {
-            transform: scale(1);
-            filter: grayscale(0) sepia(1) hue-rotate(10deg) saturate(3) brightness(1.5);
+          .overlay-style {
+            transform: translateY(0);
           }
         }
-      }
-      
-      // Enhanced state for animations - will-change now handled conditionally in JS
-      &.animating {
-        // Animation state class for reference
-      }
-      
-      // Visible state for debugging
-      &.gallery-visible {
-        opacity: 1 !important;
-        transform: scale(1) !important;
-        visibility: visible !important;
-      }
-    }
-  }
-
-  // CSS Fallback Keyframes
-  @keyframes galleryFadeIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.8) rotate(10deg);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) rotate(0deg);
-    }
-  }
-
-  // Intersection Observer fallback
-  @media (prefers-reduced-motion: no-preference) {
-    .gallery-item {
-      opacity: 0;
-      transform: scale(0.5);
-      
-      &.in-view {
-        opacity: 1;
-        transform: scale(1);
-        transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       }
     }
   }
 
   // Contact Section
   .contact {
-    background: linear-gradient(180deg, $background 0%, $background-light 100%);
-    padding: 0 $spacing-sm;
+    background: linear-gradient(180deg, $ash 0%, $cinder 100%);
+    position: relative;
+    overflow: hidden;
+
+    #hell-canvas {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+    }
 
     .section-title {
+        font-family: $font-display;
       text-align: center;
-      margin-bottom: $spacing-3xl;
-      color: $text;
+      margin-bottom: $space-24;
+      color: $bone;
     }
 
     .contact-content {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: $spacing-3xl;
+      gap: $space-16;
       max-width: 1000px;
       margin: 0 auto;
     }
 
     .contact-info {
       h3 {
-        font-family: $font-accent;
-        color: $accent;
-        margin-bottom: $spacing-lg;
+        font-family: $font-display;
+        color: $heat-mid;
+        margin-bottom: $space-6;
         font-size: 1.5rem;
         font-weight: 600;
       }
 
       p {
-        margin-bottom: $spacing-md;
+        margin-bottom: $space-4;
         line-height: 1.6;
-        color: $text-dim;
+        color: $bone-dim;
 
         strong {
-          color: $accent;
+          color: $heat-mid;
         }
       }
 
       .hours {
-        margin-top: $spacing-xl;
-        padding: $spacing-lg;
-        background: rgba($background-lighter, 0.5);
-        border-radius: $border-radius;
-        border-left: 4px solid $primary;
+        margin-top: $space-8;
+        padding: $space-6;
+        background: rgba($iron, 0.5);
+        border-radius: $radius-base;
+        border-left: 4px solid $heat-core;
 
         h4 {
-          color: $accent;
-          margin-bottom: $spacing-md;
-          font-family: $font-accent;
+          color: $heat-mid;
+          margin-bottom: $space-4;
+          font-family: $font-display;
           font-weight: 600;
         }
 
@@ -993,30 +605,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       form {
         display: flex;
         flex-direction: column;
-        gap: $spacing-lg;
+        gap: $space-6;
       }
 
       input,
       select,
       textarea {
-        padding: $spacing-md;
-        background: rgba($background-lighter, 0.5);
-        border: 1px solid rgba($accent, 0.3);
-        border-radius: $border-radius;
-        color: $text;
+        padding: $space-4;
+        background: rgba($iron, 0.5);
+        border: 1px solid rgba($heat-mid, 0.3);
+        border-radius: $radius-base;
+        color: $bone;
         font-size: 1rem;
-        font-family: $font-primary;
-        transition: $transition;
+        font-family: $font-body;
+        transition: all $t-base $ease-heat;
 
         &:focus {
           outline: none;
-          border-color: $accent;
-          box-shadow: 0 0 10px rgba($accent, 0.2);
-          background: rgba($background-lighter, 0.8);
+          border-color: $heat-mid;
+          box-shadow: 0 0 10px rgba($heat-mid, 0.2);
+          background: rgba($iron, 0.8);
         }
 
         &::placeholder {
-          color: $text-muted;
+          color: $bone-dim;
         }
       }
 
@@ -1046,22 +658,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         
         // Style the placeholder option (first empty option)
         option[value=""] {
-          color: $text-muted;
+          color: $bone-dim;
         }
         
         // Ensure other options have normal text color
         option:not([value=""]) {
-          color: $text;
+          color: $bone;
         }
         
         // When no option is selected (showing placeholder), use muted color
         &:invalid {
-          color: $text-muted;
+          color: $bone-dim;
         }
         
         // When a valid option is selected, use normal text color
         &:valid {
-          color: $text;
+          color: $bone;
         }
       }
 
@@ -1072,112 +684,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
 
       .submit-btn {
-        padding: $spacing-lg $spacing-xl;
-        border: none;
-        border-radius: $border-radius;
-        font-size: 1.25rem; // Enlarged text
-        font-weight: 700;
-        font-family: $font-accent;
+        padding: $space-4 $space-8;
+        background: $ash;
+        border: 1px solid transparent;
+        border-image: linear-gradient(135deg, $heat-deep, $heat-bright) 1;
+        border-radius: 0;
+        font-size: 1rem;
+        font-weight: 600;
+        font-family: $font-body;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: $tracking-wide;
+        color: $bone;
         cursor: pointer;
-        transition: $transition;
-        position: relative;
-        
-        // Full fire gradient background
-        background: radial-gradient(circle at 50% 50%, 
-          $fire-red 0%, 
-          $fire-orange 25%, 
-          $fire-yellow 50%, 
-          $ember-glow 75%, 
-          $fire-red 100%);
-        background-size: 300% 300%;
-        animation: fireRadialMove 8s ease-in-out infinite;
-        
-        // Black background to hide gradient except text/border
-        &::before {
-          content: '';
-          position: absolute;
-          top: 4px;
-          left: 4px;
-          right: 4px;
-          bottom: 4px;
-          background: $background;
-          border-radius: calc($border-radius - 4px);
-          z-index: 1;
-        }
-        
-        // Fire gradient text on top
-        &::after {
-          content: 'Send Message';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: radial-gradient(circle at 50% 50%, 
-            $fire-red 0%, 
-            $fire-orange 25%, 
-            $fire-yellow 50%, 
-            $ember-glow 75%, 
-            $fire-red 100%);
-          background-size: 300% 300%;
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: fireRadialMove 8s ease-in-out infinite;
-          font-family: inherit;
-          font-weight: inherit;
-          font-size: inherit;
-          text-transform: inherit;
-          letter-spacing: inherit;
-          z-index: 2;
-        }
+        transition: all $t-base $ease-heat, box-shadow $t-base $ease-heat, transform $t-base $ease-heat;
 
         &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba($primary, 0.3);
+          color: $heat-glow;
+        border-image: linear-gradient(90deg, $heat-deep, $heat-bright) 1;
         }
 
         &:active {
-          transform: translateY(0);
+        color: $heat-mid;
         }
       }
-    }
-  }
-
-  // Fire Radial Gradient Animation
-  @keyframes fireRadialMove {
-    0% {
-      background-position: 0% 0%;
-    }
-    25% {
-      background-position: 100% 50%;
-    }
-    50% {
-      background-position: 100% 100%;
-    }
-    75% {
-      background-position: 50% 100%;
-    }
-    100% {
-      background-position: 0% 0%;
     }
   }
 
   // Responsive adjustments
-  @media (max-width: $breakpoint-md) {
+  @media (max-width: 768px) {
     .hero {
       .hero-description {
         font-size: 1rem;
-        margin-bottom: $spacing-xl;
+        margin-bottom: $space-8;
       }
 
       .hero-cta {
-        padding: $spacing-md $spacing-xl;
+        padding: $space-4 $space-8;
         font-size: 1rem;
       }
     }
@@ -1194,16 +736,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     }
 
-    .gallery {
-      .gallery-grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      }
-    }
-
     .contact {
       .contact-content {
         grid-template-columns: 1fr;
-        gap: $spacing-xl;
+        gap: $space-8;
       }
       
       // Mobile-specific form input styling
@@ -1223,22 +759,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       }
     }
 
-    .navbar {
-      .nav-links {
-        gap: $spacing-lg;
-      }
-    }
   }
 
-  @media (max-width: $breakpoint-sm) {
-    .navbar {
-      .nav-links {
-        display: none; // Hide desktop navigation
-      }
-      
-      .mobile-menu-toggle {
-        display: flex; // Show hamburger menu
-      }
-    }
-  }
 </style>

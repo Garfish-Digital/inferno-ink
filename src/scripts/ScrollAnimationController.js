@@ -1,33 +1,19 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-// Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
 
 class ScrollAnimationController {
   constructor() {
-    this.customEasing = {
-      // Fire-themed custom easing functions
-      fireBlast: "power4.out",
-      emberFloat: "power2.inOut", 
-      flameFlicker: "elastic.out(1, 0.6)",
-      smokeRise: "power3.out",
-      sparkBurst: "back.out(1.7)",
-      infernoWave: "expo.inOut",
-      magicSpell: "elastic.out(0.8, 0.4)",
-      phoenixRise: "power4.inOut"
-    };
-    
     this.animationTimelines = new Map();
     this.isInitialized = false;
     this.isMobile = window.innerWidth <= 768;
     this.isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
+
     this.init();
   }
 
   init() {
-    // Wait for DOM to be ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.setupAnimations());
     } else {
@@ -36,785 +22,237 @@ class ScrollAnimationController {
   }
 
   setupAnimations() {
-    // Ensure viewport is stable before setting up complex animations
+    if (this.isReducedMotion) {
+      this.showAllElements();
+      return;
+    }
+
     requestAnimationFrame(() => {
       this.setupInitialStates();
-      
-      // Prioritize hero animations for immediate visibility
       this.createHeroAnimations();
-      
-      // Defer non-critical animations to prevent layout blocking
+
       requestIdleCallback(() => {
         this.createSectionTitleAnimations();
         this.createServiceCardAnimations();
         this.createArtistAnimations();
-        
-        // Defer heavy gallery animations even further on mobile
-        if (this.isMobile) {
-          setTimeout(() => {
-            this.createGalleryAnimations();
-          }, 100);
-        } else {
-          this.createGalleryAnimations();
-        }
-        
+        this.createGalleryAnimations();
         this.createContactAnimations();
-        
-        // Skip parallax effects on mobile for performance
-        if (!this.isMobile && !this.isReducedMotion) {
-          this.createParallaxEffects();
-        }
-        
-        this.createNavigationAnimations();
-        this.setupFallbackObserver();
-        
+
         this.isInitialized = true;
-        
-        // Refresh ScrollTrigger after all animations are set up
         ScrollTrigger.refresh();
-      }, { timeout: 2000 }); // Fallback timeout
+      }, { timeout: 2000 });
     });
   }
+
+  showAllElements() {
+    // Under reduced motion, make everything visible immediately
+    gsap.set(
+      '.hero-title, .hero-tagline, .hero-description, .hero-cta, ' +
+      '.section-title, .service-card, .artist-card, .gallery-item, ' +
+      '.contact-info, .contact-form',
+      { opacity: 1, y: 0, scale: 1, clipPath: 'none', visibility: 'visible' }
+    );
+  }
+
+  // ── Initial States ──────────────────────────────────────────────────────────
 
   setupInitialStates() {
-    // Set initial states for all animated elements
-    gsap.set('.section-title', { 
-      y: 100, 
-      opacity: 0, 
-      scale: 0.8,
-      rotationX: 45
-    });
-    
-    gsap.set('.service-card', { 
-      y: 150, 
-      opacity: 0, 
-      scale: 0.8,
-      rotationY: 45,
-      transformOrigin: "center bottom"
-    });
-    
-    gsap.set('.artist-card', { 
-      x: -200, 
-      opacity: 0, 
-      rotationZ: -15,
-      scale: 0.7
-    });
-    
-    // More reliable gallery initial state
+    // Hero
+    gsap.set('.hero-title', { clipPath: 'inset(0 100% 0 0)' });
+    gsap.set('.hero-tagline', { y: 30, opacity: 0 });
+    gsap.set('.hero-description', { y: 30, opacity: 0 });
+    gsap.set('.hero-cta', { y: 30, opacity: 0, scale: 0.98 });
+
+    // Section titles
+    gsap.set('.section-title', { clipPath: 'inset(0 100% 0 0)' });
+
+    // Cards
+    gsap.set('.service-card', { y: 40, opacity: 0 });
+    gsap.set('.artist-card', { y: 40, opacity: 0 });
+
+    // Gallery
     const galleryItems = document.querySelectorAll('.gallery-item');
     if (galleryItems.length > 0) {
-      galleryItems.forEach((item, index) => {
-        gsap.set(item, { 
-          scale: 0, 
-          opacity: 0, 
-          rotation: (Math.random() - 0.5) * 90,
-          transformOrigin: "center",
-          visibility: "visible" // Ensure visibility
-        });
-      });
+      gsap.set(galleryItems, { scale: 0.97, opacity: 0, visibility: 'visible' });
     }
-    
-    gsap.set('.contact-info, .contact-form', { 
-      y: 200, 
-      opacity: 0,
-      scale: 0.9
-    });
-    
-    gsap.set('.nav-links li', { 
-      y: -50, 
-      opacity: 0 
-    });
+
+    // Contact
+    gsap.set('.contact-info, .contact-form', { y: 30, opacity: 0 });
   }
+
+  // ── Hero ─────────────────────────────────────────────────────────────────────
 
   createHeroAnimations() {
-    const heroTl = gsap.timeline({ 
-      delay: 0.5,
-      onComplete: () => this.createHeroParticleExplosion()
-    });
-    
-    // Hero title with dramatic entrance
+    const heroTl = gsap.timeline({ delay: 0.3 });
+
+    // 1. Title — clip-path reveal, left to right
     heroTl.to('.hero-title', {
-      duration: 2,
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      ease: this.customEasing.phoenixRise,
-      transformOrigin: "center"
+      clipPath: 'inset(0 0% 0 0)',
+      duration: 1.4,
+      ease: 'expo.inOut'
     })
+    // 2. Tagline — fade-rise, 0.6s after title begins
     .to('.hero-tagline', {
-      duration: 1.5,
       y: 0,
       opacity: 1,
-      ease: this.customEasing.emberFloat,
-      delay: -1
-    })
+      duration: 0.8,
+      ease: 'power2.out'
+    }, 0.6)
+    // 3. Description — fade-rise, 0.9s after title begins
     .to('.hero-description', {
-      duration: 1.2,
       y: 0,
       opacity: 1,
-      ease: this.customEasing.smokeRise,
-      delay: -0.8
-    })
-    .to('.hero-cta', {
       duration: 1,
+      ease: 'power2.out'
+    }, 0.9)
+    // 4. CTA — fade-rise + subtle scale, 1.1s after title begins
+    .to('.hero-cta', {
       y: 0,
       opacity: 1,
       scale: 1,
-      ease: this.customEasing.sparkBurst,
-      delay: -0.5,
-      onComplete: () => {
-        // Add continuous glow pulse to CTA
-        gsap.to('.hero-cta', {
-          boxShadow: '0 12px 50px rgba(204, 0, 0, 0.6)',
-          duration: 2,
-          ease: "sine.inOut",
-          repeat: -1,
-          yoyo: true
-        });
-      }
-    });
+      duration: 0.8,
+      ease: 'power2.out',
+    }, 1.1);
 
-    // Initial states for hero elements
-    gsap.set('.hero-title', { y: 150, opacity: 0, scale: 0.5 });
-    gsap.set('.hero-tagline', { y: 100, opacity: 0 });
-    gsap.set('.hero-description', { y: 80, opacity: 0 });
-    gsap.set('.hero-cta', { y: 60, opacity: 0, scale: 0.8 });
+    this.animationTimelines.set('hero', heroTl);
   }
 
-  createHeroParticleExplosion() {
-    // Create magical particle explosion when hero loads
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-      const rect = heroTitle.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      
-      // Trigger particle explosion in magical cursor
-      if (window.magicalCursor) {
-        window.magicalCursor.mouse.x = centerX;
-        window.magicalCursor.mouse.y = centerY;
-        window.magicalCursor.createClickExplosion();
-      }
-    }
-  }
+  // ── Section Titles ──────────────────────────────────────────────────────────
 
   createSectionTitleAnimations() {
     document.querySelectorAll('.section-title').forEach((title, index) => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: title,
-          start: "top 85%",
-          end: "bottom 15%",
-          toggleActions: "play none none reverse",
-          onEnter: () => this.createTitleParticleEffect(title)
+          start: 'top 80%',
+          end: 'top 40%',
+          toggleActions: 'play none none none'
         }
       });
 
       tl.to(title, {
-        duration: 1.5,
-        y: 0,
-        opacity: 1,
-        scale: 1,
-        rotationX: 0,
-        ease: this.customEasing.magicSpell,
-        transformOrigin: "center bottom"
-      })
-      .to(title, {
-        duration: 0.8,
-        textShadow: "0 0 30px rgba(255, 87, 34, 0.8)",
-        ease: this.customEasing.flameFlicker,
-        delay: -0.5
+        clipPath: 'inset(0 0% 0 0)',
+        duration: 1.1,
+        ease: 'expo.inOut'
       });
 
       this.animationTimelines.set(`section-title-${index}`, tl);
     });
   }
 
-  createTitleParticleEffect(titleElement) {
-    // Create sparkle effect around section titles
-    if (window.magicalCursor) {
-      const rect = titleElement.getBoundingClientRect();
-      const originalX = window.magicalCursor.mouse.x;
-      const originalY = window.magicalCursor.mouse.y;
-      
-      // Create sparkles around the title
-      for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-          window.magicalCursor.mouse.x = rect.left + Math.random() * rect.width;
-          window.magicalCursor.mouse.y = rect.top + Math.random() * rect.height;
-          window.magicalCursor.createSparkle();
-        }, i * 100);
-      }
-      
-      // Restore original mouse position
-      setTimeout(() => {
-        window.magicalCursor.mouse.x = originalX;
-        window.magicalCursor.mouse.y = originalY;
-      }, 1000);
-    }
-  }
+  // ── Service Cards ───────────────────────────────────────────────────────────
 
   createServiceCardAnimations() {
-    const serviceCards = document.querySelectorAll('.service-card');
-    
-    if (serviceCards.length === 0) return;
+    const cards = document.querySelectorAll('.service-card');
+    if (cards.length === 0) return;
 
-    const tl = gsap.timeline({
+    gsap.to(cards, {
+      y: 0,
+      opacity: 1,
+      duration: 0.7,
+      ease: 'power2.out',
+      stagger: { amount: 0.4, from: 'start' },
       scrollTrigger: {
         trigger: '.services',
-        start: "top 75%",
-        end: "bottom 25%",
-        toggleActions: "play none none reverse"
-      }
-    });
-
-    // Staggered entrance with different directions and rotations
-    serviceCards.forEach((card, index) => {
-      const delay = index * 0.15;
-      const direction = index % 2 === 0 ? -1 : 1;
-      
-      tl.to(card, {
-        duration: 1.2,
-        y: 0,
-        x: 0,
-        opacity: 1,
-        scale: 1,
-        rotationY: 0,
-        rotationZ: 0,
-        ease: this.customEasing.sparkBurst,
-        transformOrigin: "center bottom",
-        delay: delay,
-        onComplete: () => this.addCardHoverEnhancements(card)
-      }, 0);
-
-      // Add floating animation
-      tl.to(card, {
-        duration: 3,
-        y: -10,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        delay: delay + 1
-      }, 0);
-
-      // Initial position based on index
-      gsap.set(card, { 
-        x: direction * 300, 
-        y: 150, 
-        opacity: 0, 
-        scale: 0.6,
-        rotationY: direction * 45,
-        rotationZ: direction * 10
-      });
-    });
-
-    this.animationTimelines.set('service-cards', tl);
-  }
-
-  addCardHoverEnhancements(card) {
-    // Enhanced hover effects for service cards
-    card.addEventListener('mouseenter', () => {
-      gsap.to(card, {
-        duration: 0.3,
-        scale: 1.05,
-        y: -15,
-        rotationY: 5,
-        boxShadow: "0 25px 50px rgba(204, 0, 0, 0.3)",
-        ease: this.customEasing.sparkBurst
-      });
-      
-      // Add glow to service icon
-      const icon = card.querySelector('.service-icon');
-      if (icon) {
-        gsap.to(icon, {
-          duration: 0.3,
-          scale: 1.2,
-          filter: "brightness(1.5) saturate(1.5)",
-          ease: this.customEasing.flameFlicker
-        });
-      }
-    });
-
-    card.addEventListener('mouseleave', () => {
-      gsap.to(card, {
-        duration: 0.4,
-        scale: 1,
-        y: 0,
-        rotationY: 0,
-        boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
-        ease: this.customEasing.emberFloat
-      });
-      
-      const icon = card.querySelector('.service-icon');
-      if (icon) {
-        gsap.to(icon, {
-          duration: 0.4,
-          scale: 1,
-          filter: "brightness(1) saturate(1)",
-          ease: this.customEasing.emberFloat
-        });
+        start: 'top 80%',
+        end: 'top 40%',
+        toggleActions: 'play none none none'
       }
     });
   }
+
+  // ── Artist Cards ────────────────────────────────────────────────────────────
 
   createArtistAnimations() {
-    const artistCards = document.querySelectorAll('.artist-card');
-    
-    if (artistCards.length === 0) return;
+    const cards = document.querySelectorAll('.artist-card');
+    if (cards.length === 0) return;
 
-    artistCards.forEach((card, index) => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: card,
-          start: "top 80%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse"
-        }
-      });
-
-      const direction = index % 2 === 0 ? -1 : 1;
-      
-      // Dramatic entrance with rotation and scale
-      tl.to(card, {
-        duration: 1.5,
-        x: 0,
-        opacity: 1,
-        rotationZ: 0,
-        scale: 1,
-        ease: this.customEasing.phoenixRise,
-        transformOrigin: "center"
-      })
-      .to(card.querySelector('.artist-image'), {
-        duration: 1.5, // Match card duration
-        scale: 1,
-        // Remove rotation entirely
-        ease: "power2.out", // Smoother easing
-        delay: -1.5, // Start with card
-        force3D: true,
-        transformOrigin: "center center"
-      })
-      .to(card.querySelector('h3'), {
-        duration: 0.8,
-        y: 0,
-        opacity: 1,
-        ease: this.customEasing.sparkBurst,
-        delay: -0.6
-      })
-      .to(card.querySelector('.artist-specialty'), {
-        duration: 0.6,
-        y: 0,
-        opacity: 1,
-        color: "#FF5722",
-        ease: this.customEasing.emberFloat,
-        delay: -0.4
-      })
-      .to(card.querySelector('p:last-child'), {
-        duration: 0.8,
-        y: 0,
-        opacity: 1,
-        ease: this.customEasing.smokeRise,
-        delay: -0.4
-      })
-      // Add transition buffer for smooth finish
-      .to(card, {
-        duration: 0.3,
-        ease: "power2.out",
-        onComplete: () => {
-          // Start gentle floating animation
-          gsap.to(card, {
-            duration: 4,
-            y: -5,
-            ease: "sine.inOut",
-            repeat: -1,
-            yoyo: true
-          });
-        }
-      });
-
-      // Set initial states
-      gsap.set(card.querySelector('.artist-image'), { 
-        scale: 0.5, 
-        // rotation: -180 
-      });
-      gsap.set(card.querySelector('h3'), { 
-        y: 50, 
-        opacity: 0 
-      });
-      gsap.set(card.querySelector('.artist-specialty'), { 
-        y: 30, 
-        opacity: 0 
-      });
-      gsap.set(card.querySelector('p:last-child'), { 
-        y: 40, 
-        opacity: 0 
-      });
-
-      this.animationTimelines.set(`artist-card-${index}`, tl);
+    gsap.to(cards, {
+      y: 0,
+      opacity: 1,
+      duration: 0.7,
+      ease: 'power2.out',
+      stagger: { amount: 0.4, from: 'start' },
+      scrollTrigger: {
+        trigger: '.artists',
+        start: 'top 80%',
+        end: 'top 40%',
+        toggleActions: 'play none none none'
+      }
     });
   }
+
+  // ── Gallery ─────────────────────────────────────────────────────────────────
 
   createGalleryAnimations() {
     const galleryItems = document.querySelectorAll('.gallery-item');
-    
-    if (galleryItems.length === 0) {
-      console.warn('Gallery elements not found');
-      return;
-    }
+    if (galleryItems.length === 0) return;
 
-    // Set initial state for all items
-    gsap.set(galleryItems, { 
-      scale: 0, 
-      opacity: 0, 
-      transformOrigin: "center",
-      visibility: "visible"
-    });
-
-    // Use ScrollTrigger.batch for optimized performance - single scroll listener
-    ScrollTrigger.batch('.gallery-item', {
-      onEnter: (elements) => {
-        // Animate elements with stagger and conditional will-change
-        elements.forEach(element => {
-          element.style.willChange = 'transform, opacity'; // Conditional will-change
-        });
-        
-        gsap.fromTo(elements, 
-          {
-            scale: 0,
-            opacity: 0,
-            y: 100
-          },
-          {
-            duration: 1.2,
-            scale: 1,
-            opacity: 1,
-            y: 0,
-            ease: this.customEasing.sparkBurst,
-            stagger: 0.15,
-            onStart: function() {
-              this.targets().forEach(target => target.classList.add('animating'));
-            },
-            onComplete: function() {
-              // Clean up will-change and add hover effects
-              this.targets().forEach(target => {
-                target.style.willChange = 'auto';
-                target.classList.remove('animating');
-                this.addGalleryItemEffects(target);
-              });
-            }.bind(this)
-          }
-        );
-      },
-      onLeave: (elements) => {
-        // Clean up will-change on leave
-        elements.forEach(element => {
-          element.style.willChange = 'auto';
-        });
-      },
-      start: "top 90%",
-      end: "bottom 10%"
-    });
-
-    // Store reference for cleanup
-    this.animationTimelines.set('gallery-batch', 'batch-animation');
-  }
-
-  addGalleryItemEffects(item) {
-    const overlay = item.querySelector('.gallery-overlay');
-    
-    item.addEventListener('mouseenter', () => {
-      // Apply conditional will-change only during hover
-      item.style.willChange = 'transform, opacity';
-      
-      // Use single transform3d instead of separate scale/rotation
-      gsap.to(item, {
-        duration: 0.4,
-        transform: "translate3d(0, -8px, 0) scale3d(1.05, 1.05, 1)",
-        boxShadow: "0 25px 60px rgba(255, 87, 34, 0.5)",
-        ease: this.customEasing.flameFlicker,
-        force3D: true
-      });
-      
-      // Simplified overlay animation - opacity only
-      if (overlay) {
-        gsap.to(overlay, {
-          duration: 0.3,
-          opacity: 1,
-          ease: this.customEasing.sparkBurst
-        });
-      }
-    });
-
-    item.addEventListener('mouseleave', () => {
-      // Use single transform3d for reset
-      gsap.to(item, {
-        duration: 0.5,
-        transform: "translate3d(0, 0, 0) scale3d(1, 1, 1)",
-        boxShadow: "0 15px 35px rgba(204, 0, 0, 0.3)",
-        ease: this.customEasing.emberFloat,
-        force3D: true,
-        onComplete: () => {
-          // Clean up will-change after animation
-          item.style.willChange = 'auto';
-        }
-      });
-      
-      // Reset overlay opacity
-      if (overlay) {
-        gsap.to(overlay, {
-          duration: 0.4,
-          opacity: 0,
-          ease: this.customEasing.emberFloat
-        });
+    gsap.to(galleryItems, {
+      scale: 1,
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power1.out',
+      stagger: 0.12,
+      scrollTrigger: {
+        trigger: '.gallery-grid',
+        start: 'top 85%',
+        end: 'top 40%',
+        toggleActions: 'play none none none'
       }
     });
   }
+
+  // ── Contact ─────────────────────────────────────────────────────────────────
 
   createContactAnimations() {
     const contactInfo = document.querySelector('.contact-info');
     const contactForm = document.querySelector('.contact-form');
-    
     if (!contactInfo || !contactForm) return;
 
-    // Contact info animation
-    const infoTl = gsap.timeline({
+    gsap.to(contactInfo, {
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      ease: 'power2.out',
       scrollTrigger: {
         trigger: contactInfo,
-        start: "top 80%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse"
+        start: 'top 80%',
+        end: 'top 40%',
+        toggleActions: 'play none none none'
       }
     });
 
-    infoTl.to(contactInfo, {
-      duration: 1.5,
+    gsap.to(contactForm, {
       y: 0,
       opacity: 1,
-      scale: 1,
-      ease: this.customEasing.phoenixRise
-    })
-    .to(contactInfo.querySelectorAll('p'), {
       duration: 0.8,
-      y: 0,
-      opacity: 1,
-      stagger: 0.1,
-      ease: this.customEasing.emberFloat,
-      delay: -1
-    })
-    .to(contactInfo.querySelector('.hours'), {
-      duration: 1,
-      scale: 1,
-      opacity: 1,
-      rotationY: 0,
-      ease: this.customEasing.sparkBurst,
-      delay: -0.5
-    });
-
-    // Contact form animation
-    const formTl = gsap.timeline({
+      ease: 'power2.out',
       scrollTrigger: {
         trigger: contactForm,
-        start: "top 80%",
-        end: "bottom 20%",
-        toggleActions: "play none none reverse"
+        start: 'top 80%',
+        end: 'top 40%',
+        toggleActions: 'play none none none'
       }
     });
-
-    formTl.to(contactForm, {
-      duration: 1.5,
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      ease: this.customEasing.magicSpell
-    })
-    .to(contactForm.querySelectorAll('input, select, textarea'), {
-      duration: 0.6,
-      y: 0,
-      opacity: 1,
-      stagger: 0.08,
-      ease: this.customEasing.emberFloat,
-      delay: -1
-    })
-    .to(contactForm.querySelector('.submit-btn'), {
-      duration: 0.8,
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      ease: this.customEasing.sparkBurst,
-      delay: -0.3,
-      onComplete: () => this.addFormButtonEffects()
-    });
-
-    // Set initial states
-    gsap.set(contactInfo.querySelectorAll('p'), { y: 30, opacity: 0 });
-    gsap.set(contactInfo.querySelector('.hours'), { 
-      scale: 0.8, 
-      opacity: 0, 
-      rotationY: 45 
-    });
-    gsap.set(contactForm.querySelectorAll('input, select, textarea'), { 
-      y: 40, 
-      opacity: 0 
-    });
-    gsap.set(contactForm.querySelector('.submit-btn'), { 
-      y: 50, 
-      opacity: 0, 
-      scale: 0.8 
-    });
-
-    this.animationTimelines.set('contact-info', infoTl);
-    this.animationTimelines.set('contact-form', formTl);
   }
 
-  addFormButtonEffects() {
-    const submitBtn = document.querySelector('.submit-btn');
-    if (!submitBtn) return;
+  // ── Utility ─────────────────────────────────────────────────────────────────
 
-    // Add magical glow effect
-    gsap.to(submitBtn, {
-      duration: 2,
-      boxShadow: "0 8px 40px rgba(204, 0, 0, 0.5)",
-      ease: "sine.inOut",
-      repeat: -1,
-      yoyo: true
-    });
-
-    // Enhanced hover effect
-    submitBtn.addEventListener('mouseenter', () => {
-      gsap.to(submitBtn, {
-        duration: 0.3,
-        scale: 1.05,
-        y: -5,
-        boxShadow: "0 15px 50px rgba(255, 87, 34, 0.6)",
-        ease: this.customEasing.sparkBurst
-      });
-    });
-
-    submitBtn.addEventListener('mouseleave', () => {
-      gsap.to(submitBtn, {
-        duration: 0.4,
-        scale: 1,
-        y: 0,
-        ease: this.customEasing.emberFloat
-      });
-    });
-  }
-
-  createParallaxEffects() {
-    // Parallax background effects for sections
-    const sections = document.querySelectorAll('section');
-    
-    sections.forEach((section, index) => {
-      if (section.classList.contains('hero')) return; // Skip hero
-      
-      gsap.to(section, {
-        yPercent: -15,
-        ease: "none",
-        scrollTrigger: {
-          trigger: section,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.5
-        }
-      });
-    });
-
-    // Floating elements parallax
-    const floatingElements = document.querySelectorAll('.section-title');
-    floatingElements.forEach(el => {
-      gsap.to(el, {
-        y: -30,
-        ease: "none",
-        scrollTrigger: {
-          trigger: el,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 1
-        }
-      });
-    });
-  }
-
-  createNavigationAnimations() {
-    const navLinks = document.querySelectorAll('.nav-links li');
-    
-    // Staggered navigation entrance
-    gsap.to(navLinks, {
-      duration: 0.8,
-      y: 0,
-      opacity: 1,
-      stagger: 0.1,
-      ease: this.customEasing.sparkBurst,
-      delay: 2 // After hero animation
-    });
-
-    // Navigation scroll effects - REMOVED to prevent height pinching
-  }
-
-  setupFallbackObserver() {
-    // Simple Intersection Observer fallback for gallery items
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    
-    if (!galleryItems.length) return;
-    
-    // Create intersection observer as backup
-    const fallbackObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('in-view', 'gallery-visible');
-          
-          // Extra insurance - force visibility after 2 seconds
-          setTimeout(() => {
-            if (gsap.getProperty(entry.target, "opacity") < 0.5) {
-              console.warn('Gallery item still hidden, forcing visibility');
-              entry.target.classList.add('gallery-visible');
-              gsap.set(entry.target, {
-                opacity: 1,
-                scale: 1,
-                rotation: 0,
-                visibility: "visible"
-              });
-            }
-          }, 2000);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '50px'
-    });
-    
-    galleryItems.forEach(item => {
-      fallbackObserver.observe(item);
-    });
-    
-    this.fallbackObserver = fallbackObserver;
-  }
-
-  // Utility methods
   refreshScrollTrigger() {
     ScrollTrigger.refresh();
   }
 
   killAllAnimations() {
-    this.animationTimelines.forEach(tl => tl.kill());
+    this.animationTimelines.forEach((tl) => {
+      if (tl && typeof tl.kill === 'function') tl.kill();
+    });
     this.animationTimelines.clear();
     ScrollTrigger.killAll();
   }
 
-  pauseAnimations() {
-    this.animationTimelines.forEach(tl => tl.pause());
-  }
-
-  resumeAnimations() {
-    this.animationTimelines.forEach(tl => tl.resume());
-  }
-
   destroy() {
     this.killAllAnimations();
-    
-    // Clean up fallback observer
-    if (this.fallbackObserver) {
-      this.fallbackObserver.disconnect();
-    }
   }
 }
 

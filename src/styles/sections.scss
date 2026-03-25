@@ -1,4 +1,4 @@
-@use 'variables' as *;
+@use '_variables' as *;
 
 // Particle Canvas
 #particle-canvas {
@@ -19,7 +19,7 @@
   justify-content: center;
   text-align: center;
   position: relative;
-  background: linear-gradient(135deg, $black 0%, $dark-gray 100%);
+  background: linear-gradient(135deg, $void 0%, $cinder 100%);
   
   &::before {
     content: '';
@@ -28,7 +28,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at center, rgba($fire-red, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle at center, rgba($heat-core, 0.1) 0%, transparent 70%);
     z-index: 2;
   }
   
@@ -60,26 +60,26 @@
   .cta-button {
     display: inline-block;
     padding: 15px 40px;
-    background: linear-gradient(45deg, $fire-red, $fire-orange);
-    color: $white;
+    background: linear-gradient(45deg, $heat-core, $heat-bright);
+    color: $bone;
     text-decoration: none;
     border-radius: 30px;
     font-weight: 600;
     font-size: 1.1rem;
-    transition: all $duration-fast $ease-fire;
-    box-shadow: 0 10px 30px rgba($fire-red, 0.3);
+    transition: all $t-fast $ease-heat;
+    box-shadow: 0 10px 30px rgba($heat-core, 0.3);
     
     &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba($fire-red, 0.5);
-      background: linear-gradient(45deg, $fire-orange, $fire-yellow);
+    //   transform: translateY(-3px);
+    //   box-shadow: 0 15px 40px rgba($heat-core, 0.5);
+      background: linear-gradient(45deg, $heat-bright, $heat-glow);
     }
   }
 }
 
 // Section Titles
 .section-title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(3rem, 5vw, 4rem);
   text-align: center;
   margin-bottom: 4rem;
   position: relative;
@@ -92,14 +92,14 @@
     transform: translateX(-50%);
     width: 100px;
     height: 3px;
-    background: linear-gradient(90deg, $fire-red, $fire-orange);
+    background: linear-gradient(90deg, $heat-core, $heat-bright);
     border-radius: 2px;
   }
 }
 
 // Services Section
 .services {
-  background: linear-gradient(180deg, $black 0%, $dark-gray 100%);
+  background: linear-gradient(180deg, $void 0%, $cinder 100%);
   
   .services-grid {
     display: grid;
@@ -109,25 +109,20 @@
   }
   
   .service-card {
-    background: rgba($dark-gray, 0.5);
+    background: rgba($cinder, 0.5);
     padding: 2.5rem 2rem;
     border-radius: 15px;
+    border-top: 1px solid $heat-core;
     text-align: center;
-    border: 1px solid rgba($fire-red, 0.2);
-    transition: all $duration-medium $ease-fire;
+    border: 1px solid rgba($heat-core, 0.2);
+    transition: all $t-base $ease-heat;
     backdrop-filter: blur(10px);
     
     &:hover {
-      transform: translateY(-10px);
-      border-color: rgba($fire-red, 0.5);
-      box-shadow: 0 20px 40px rgba($fire-red, 0.2);
-      background: rgba($dark-gray, 0.8);
-    }
-    
-    .service-icon {
-      font-size: 3rem;
-      margin-bottom: 1.5rem;
-      filter: grayscale(1) sepia(1) hue-rotate(0deg) saturate(2) brightness(1.2);
+    //   transform: translateY(-10px);
+      border-color: rgba($heat-core, 0.5);
+      box-shadow: 0 20px 40px rgba($heat-core, 0.2);
+      background: rgba($cinder, 0.8);
     }
     
     h3 {
@@ -136,7 +131,7 @@
     }
     
     p {
-      color: $text-dim;
+      color: $bone-dim;
       line-height: 1.6;
     }
   }
@@ -144,7 +139,7 @@
 
 // Artists Section
 .artists {
-  background: linear-gradient(180deg, $dark-gray 0%, $black 100%);
+  background: linear-gradient(180deg, $cinder 0%, $void 100%);
   
   .artists-grid {
     display: grid;
@@ -155,10 +150,10 @@
   
   .artist-card {
     text-align: center;
-    transition: all $duration-medium $ease-fire;
+    transition: all $t-base $ease-heat;
     
     &:hover {
-      transform: scale(1.05);
+    //   transform: scale(1.05);
     }
     
     .artist-image {
@@ -166,13 +161,13 @@
       height: 200px;
       border-radius: 50%;
       margin: 0 auto 1.5rem;
-      background: linear-gradient(135deg, $fire-red, $fire-orange);
-      border: 4px solid rgba($fire-red, 0.3);
-      transition: all $duration-medium $ease-fire;
+      background: linear-gradient(135deg, $heat-core, $heat-bright);
+      border: 4px solid rgba($heat-core, 0.3);
+      transition: all $t-base $ease-heat;
       
       &:hover {
-        box-shadow: 0 0 40px rgba($fire-red, 0.6);
-        border-color: rgba($fire-red, 0.8);
+        box-shadow: 0 0 40px rgba($heat-core, 0.6);
+        border-color: rgba($heat-core, 0.8);
       }
     }
     
@@ -182,7 +177,7 @@
     }
     
     .artist-specialty {
-      color: $fire-orange;
+      color: $heat-bright;
       font-weight: 600;
       margin-bottom: 1rem;
       text-transform: uppercase;
@@ -191,7 +186,7 @@
     }
     
     p:last-child {
-      color: $text-dim;
+      color: $bone-dim;
       line-height: 1.6;
     }
   }
@@ -199,7 +194,7 @@
 
 // Gallery Section
 .gallery {
-  background: linear-gradient(180deg, $black 0%, $dark-gray 100%);
+  background: linear-gradient(180deg, $void 0%, $cinder 100%);
   
   .gallery-grid {
     display: grid;
@@ -210,9 +205,9 @@
   
   .gallery-item {
     aspect-ratio: 1;
-    background: linear-gradient(135deg, $fire-red, $fire-orange);
+    background: linear-gradient(135deg, $heat-core, $heat-bright);
     border-radius: 15px;
-    transition: all $duration-medium $ease-fire;
+    transition: all $t-base $ease-heat;
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -224,16 +219,16 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba($black, 0.3);
-      transition: all $duration-fast $ease-fire;
+      background: rgba($void, 0.3);
+      transition: all $t-fast $ease-heat;
     }
     
     &:hover {
-      transform: scale(1.05);
-      box-shadow: 0 20px 40px rgba($fire-red, 0.4);
+    //   transform: scale(1.05);
+      box-shadow: 0 20px 40px rgba($heat-core, 0.4);
       
       &::before {
-        background: rgba($black, 0.1);
+        background: rgba($void, 0.1);
       }
     }
   }
@@ -241,7 +236,7 @@
 
 // Contact Section
 .contact {
-  background: linear-gradient(180deg, $dark-gray 0%, $black 100%);
+  background: linear-gradient(180deg, $cinder 0%, $void 100%);
   
   .contact-content {
     display: grid;
@@ -266,21 +261,21 @@
       line-height: 1.6;
       
       strong {
-        color: $fire-orange;
+        color: $heat-bright;
       }
     }
     
     .hours {
       margin-top: 2rem;
       padding: 1.5rem;
-      background: rgba($dark-gray, 0.5);
+      background: rgba($cinder, 0.5);
       border-radius: 10px;
-      border-left: 4px solid $fire-red;
+      border-left: 4px solid $heat-core;
       
       h4 {
-        color: $fire-orange;
+        color: $heat-bright;
         margin-bottom: 1rem;
-        font-family: $font-metal;
+        font-family: $font-display;
       }
     }
   }
@@ -296,40 +291,40 @@
     select,
     textarea {
       padding: 15px;
-      background: rgba($dark-gray, 0.5);
-      border: 1px solid rgba($fire-red, 0.3);
+      background: rgba($cinder, 0.5);
+      border: 1px solid rgba($heat-core, 0.3);
       border-radius: 8px;
-      color: $text-light;
+      color: $bone;
       font-size: 1rem;
-      transition: all $duration-fast $ease-fire;
+      transition: all $t-fast $ease-heat;
       
       &:focus {
         outline: none;
-        border-color: $fire-red;
-        box-shadow: 0 0 10px rgba($fire-red, 0.3);
-        background: rgba($dark-gray, 0.8);
+        border-color: $heat-core;
+        box-shadow: 0 0 10px rgba($heat-core, 0.3);
+        background: rgba($cinder, 0.8);
       }
       
       &::placeholder {
-        color: $text-dim;
+        color: $bone-dim;
       }
     }
     
     .submit-btn {
       padding: 15px 30px;
-      background: linear-gradient(45deg, $fire-red, $fire-orange);
-      color: $white;
+      background: linear-gradient(45deg, $heat-core, $heat-bright);
+      color: $bone;
       border: none;
       border-radius: 30px;
       font-size: 1.1rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all $duration-fast $ease-fire;
+      transition: all $t-fast $ease-heat;
       
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba($fire-red, 0.4);
-        background: linear-gradient(45deg, $fire-orange, $fire-yellow);
+        // transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba($heat-core, 0.4);
+        background: linear-gradient(45deg, $heat-bright, $heat-glow);
       }
     }
   }

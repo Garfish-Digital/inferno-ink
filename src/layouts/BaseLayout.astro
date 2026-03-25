@@ -1,5 +1,5 @@
 ---
-import MagicalCursor from '../components/MagicalCursor.astro';
+// MagicalCursor removed in Phase 5
 
 export interface Props {
   title?: string;
@@ -47,15 +47,29 @@ const {
       }
     </style>
     
-    <MagicalCursor />
-    
+    <div class="brand-mark">
+      <svg viewBox="0 0 40 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Shaft -->
+        <line x1="20" y1="18" x2="20" y2="58" stroke="#000000" stroke-width="2.5"/>
+        <!-- Center tine — pointed tip, longest -->
+        <polygon points="20,0 18.5,20 21.5,20" fill="#000000"/>
+        <!-- Left tine — pointed tip -->
+        <polygon points="10,4 8.5,20 11.5,20" fill="#000000"/>
+        <!-- Right tine — pointed tip -->
+        <polygon points="30,4 28.5,20 31.5,20" fill="#000000"/>
+        <!-- Crossbar -->
+        <path d="M10 20 Q10 26 20 26 Q30 26 30 20" stroke="#000000" stroke-width="2" fill="none"/>
+      </svg>
+    </div>
+
     <main>
       <slot />
     </main>
     
     <script>
-      import MagicalCursorController from '../scripts/MagicalCursorController.js';
+      import NeedleCursor from '../scripts/NeedleCursor.js';
       import ScrollAnimationController from '../scripts/ScrollAnimationController.js';
+      import HellFloor from '../scripts/HellFloor.js';
       
       // Viewport stabilization utility
       function waitForViewportStability() {
@@ -92,84 +106,36 @@ const {
         // Wait for viewport to stabilize before initializing animations
         await waitForViewportStability();
         
-        // Initialize magical cursor with mobile detection
+        // Initialize cursor (handles its own touch detection internally)
+        const needleCursor = new NeedleCursor();
+        window.needleCursor = needleCursor;
+
+        // Initialize scroll animations
         const isMobile = window.innerWidth <= 768;
-        
-        if (!isMobile) {
-          // Only initialize cursor on desktop
-          setTimeout(() => {
-            const magicalCursor = new MagicalCursorController();
-            window.magicalCursor = magicalCursor;
-          }, 50);
-        }
-        
-        // Initialize scroll animations with mobile-specific timing
         setTimeout(() => {
           const scrollAnimations = new ScrollAnimationController();
           window.scrollAnimations = scrollAnimations;
         }, isMobile ? 100 : 50);
-        
-        // Initialize mobile menu functionality
-        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-        const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
-        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
-        
-        if (mobileMenuToggle && mobileMenuOverlay) {
-          // Toggle menu on hamburger click
-          mobileMenuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            mobileMenuToggle.classList.toggle('active');
-            mobileMenuOverlay.classList.toggle('active');
-          });
-          
-          // Close menu when clicking outside
-          document.addEventListener('click', (e) => {
-            if (!mobileMenuToggle.contains(e.target) && !mobileMenuOverlay.contains(e.target)) {
-              mobileMenuToggle.classList.remove('active');
-              mobileMenuOverlay.classList.remove('active');
-            }
-          });
-          
-          // Close menu when clicking on nav links
-          mobileNavLinks.forEach(link => {
-            link.addEventListener('click', () => {
-              mobileMenuToggle.classList.remove('active');
-              mobileMenuOverlay.classList.remove('active');
-            });
-          });
-          
-          // Close menu on escape key
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && mobileMenuOverlay.classList.contains('active')) {
-              mobileMenuToggle.classList.remove('active');
-              mobileMenuOverlay.classList.remove('active');
-            }
-          });
-        }
+
+        // Initialize Hell Floor Three.js scene
+        const hellFloor = new HellFloor();
+        window.hellFloor = hellFloor;
+
       });
       
       // Cleanup on page unload
       window.addEventListener('beforeunload', () => {
-        if (window.magicalCursor) {
-          window.magicalCursor.destroy();
+        if (window.needleCursor) {
+          window.needleCursor.destroy();
         }
         if (window.scrollAnimations) {
           window.scrollAnimations.destroy();
         }
-      });
-      
-      // Handle page visibility changes for performance
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          if (window.scrollAnimations) {
-            window.scrollAnimations.pauseAnimations();
-          }
-        } else {
-          if (window.scrollAnimations) {
-            window.scrollAnimations.resumeAnimations();
-          }
+        if (window.hellFloor) {
+          window.hellFloor.destroy();
         }
       });
+      
     </script>
   </body>
 </html>
@@ -177,6 +143,21 @@ const {
 <style lang="scss">
   @use '../styles/global.scss';
   @use '../styles/_variables' as *;
+
+  .brand-mark {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 36px;
+    z-index: 10002;
+    pointer-events: none;
+
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
 
   // Garfish Digital Watermark
   .garfish-badge {
@@ -207,7 +188,7 @@ const {
   }
 
   // Responsive adjustments
-  @media (max-width: $breakpoint-sm) {
+  @media (max-width: 640px) {
     .garfish-badge {
       bottom: 15px;
       left: 15px;

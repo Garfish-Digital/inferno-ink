@@ -1,50 +1,69 @@
-// Color Variables - Dark Theme
-$background: #0A0A0A;
-$primary: #CC0000; // blood red
-$accent: #FF5722; // fire orange
-$text: #FAF7F0; // bone white
+// ─── CORE PALETTE ────────────────────────────────────────────────────────────
+$void:            #080808;   // true black — hero background, deepest surfaces
+$ash:             #111111;   // default body background
+$cinder:          #1C1C1C;   // elevated surfaces (cards, navbar)
+$iron:            #2E2E2E;   // borders, dividers
+$smoke:           #6B6B6B;   // muted text, inactive states
+$bone:            #E8E2D9;   // primary text
+$bone-dim:        #A09890;   // secondary text
 
-// Fire-specific colors
-$fire-red: #FF4444;
-$fire-orange: #FF6B35;
-$fire-yellow: #FFD23F;
-$ember-glow: #FF8C42;
+// ─── HEAT PALETTE ────────────────────────────────────────────────────────────
+$heat-deep:       #8B0000;   // deep blood — used sparingly, darkest accent
+$heat-core:       #CC2200;   // primary brand red — CTAs, active states
+$heat-mid:        #E84A1A;   // fire orange — hover states, highlights
+$heat-bright:     #FF6B35;   // bright ember — tip of the flame, never dominant
+$heat-glow:       #FF9A5C;   // glow halos only — never used as a fill color
+$heat-flame:     #fff200;   // pure flame — for special highlights, used very sparingly
 
-// Additional shades for depth
-$background-light: #1A1A1A;
-$background-lighter: #2A2A2A;
-$primary-dark: #990000;
-$accent-light: #FF7043;
-$text-dim: #D0CCC7;
-$text-muted: #A09B96;
+// ─── FUNCTIONAL ──────────────────────────────────────────────────────────────
+$overlay:         rgba($void, 0.75);
+$glass:           rgba($cinder, 0.6);
 
-// Typography
-$font-primary: 'Inter', sans-serif;
-$font-heading: 'Playfair Display', serif;
-$font-accent: 'Oswald', sans-serif;
+// ─── TYPOGRAPHY ───────────────────────────────────────────────────────────────
+$font-display:    'Cinzel', Georgia, serif;
+$font-body:       'Inter', system-ui, sans-serif;
 
-// Spacing
-$spacing-xs: 0.25rem;
-$spacing-sm: 0.5rem;
-$spacing-md: 1rem;
-$spacing-lg: 1.5rem;
-$spacing-xl: 2rem;
-$spacing-2xl: 3rem;
-$spacing-3xl: 4rem;
+$size-xs:    0.75rem;
+$size-sm:    0.875rem;
+$size-base:  1rem;
+$size-md:    1.125rem;
+$size-lg:    1.5rem;
+$size-xl:    2rem;
+$size-2xl:   3rem;
+$size-3xl:   4.5rem;
 
-// Layout
-$container-max-width: 1200px;
-$container-padding: 1rem;
+$tracking-tight:   -0.02em;
+$tracking-base:     0;
+$tracking-wide:     0.08em;
+$tracking-wider:    0.15em;
+$tracking-widest:   0.25em;
 
-// Breakpoints
-$breakpoint-sm: 640px;
-$breakpoint-md: 768px;
-$breakpoint-lg: 1024px;
-$breakpoint-xl: 1280px;
+// ─── SPACING ─────────────────────────────────────────────────────────────────
+$space-1:   0.25rem;
+$space-2:   0.5rem;
+$space-3:   0.75rem;
+$space-4:   1rem;
+$space-6:   1.5rem;
+$space-8:   2rem;
+$space-12:  3rem;
+$space-16:  4rem;
+$space-24:  6rem;
+$space-32:  8rem;
 
-// Effects
-$border-radius: 0.5rem;
-$border-radius-lg: 1rem;
-$transition: all 0.3s ease;
-$shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-$shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+// ─── LAYOUT ──────────────────────────────────────────────────────────────────
+$container-width:   1200px;
+$container-padding: clamp(1rem, 5vw, 3rem);
+
+// ─── RADII ───────────────────────────────────────────────────────────────────
+$radius-sm:   2px;
+$radius-base: 4px;
+$radius-none: 0;
+
+// ─── TRANSITIONS ─────────────────────────────────────────────────────────────
+$ease-heat:    cubic-bezier(0.4, 0, 0.2, 1);
+$ease-rise:    cubic-bezier(0.16, 1, 0.3, 1);
+$ease-reveal:  cubic-bezier(0.77, 0, 0.175, 1);
+$t-fast:   0.2s;
+$t-base:   0.35s;
+$t-slow:   0.6s;
+$t-crawl:  1.2s;

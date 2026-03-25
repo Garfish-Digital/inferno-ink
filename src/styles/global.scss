@@ -1,6 +1,5 @@
 @use '_variables' as *;
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Oswald:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500&display=swap');
 
 // Reset and base styles
 *,
@@ -23,14 +22,14 @@ html {
 }
 
 body {
-  font-family: $font-primary;
+  font-family: $font-body;
   font-size: 1rem;
   line-height: 1.6;
-  color: $text;
-  background-color: $background;
+  color: $bone;
+  background-color: $ash;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: none; // Hide default cursor for magical cursor
+  cursor: none; // Hide default cursor — NeedleCursor replaces it
   overflow-x: hidden; // Prevent horizontal scroll from particles
   
   // Hide scrollbar for body element
@@ -41,18 +40,17 @@ body {
     display: none; // Chrome, Safari, Opera
   }
   
+  // Restore cursor on touch devices
+  @media (pointer: coarse) {
+    cursor: auto;
+  }
+
   // Mobile viewport stability
-  @media (max-width: $breakpoint-md) {
-    // Ensure stable layout on mobile
+  @media (max-width: 768px) {
     min-height: 100vh;
-    min-height: 100dvh; // Dynamic viewport height support
+    min-height: 100dvh;
     width: 100%;
     position: relative;
-    
-    // Show cursor on mobile/touch devices
-    cursor: auto;
-    
-    // Prevent zoom on input focus (iOS)
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
@@ -75,10 +73,10 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: $font-heading;
+  font-family: $font-display;
   font-weight: 600;
   line-height: 1.2;
-  margin-bottom: $spacing-md;
+  margin-bottom: $space-4;
 }
 
 h1 {
@@ -87,7 +85,7 @@ h1 {
 }
 
 h2 {
-  font-size: 2.5rem;
+  font-size: 3rem;
 }
 
 h3 {
@@ -107,27 +105,27 @@ h6 {
 }
 
 p {
-  margin-bottom: $spacing-md;
+  margin-bottom: $space-4;
 }
 
 a {
-  color: $accent;
+  color: $heat-mid;
   text-decoration: none;
-  transition: $transition;
+  transition: all $t-fast $ease-heat;
 
   &:hover {
-    color: $accent-light;
+    color: $heat-bright;
   }
 }
 
 // Layout utilities
 .container {
-  max-width: $container-max-width;
+  max-width: $container-width;
   margin: 0 auto;
   padding: 0 $container-padding;
   
   // Mobile-specific container optimizations
-  @media (max-width: $breakpoint-md) {
+  @media (max-width: 768px) {
     padding: 0 clamp(1rem, 4vw, 2rem); // Responsive padding
     width: 100%;
     box-sizing: border-box;
@@ -139,7 +137,7 @@ a {
 }
 
 .section {
-  padding: $spacing-3xl 0;
+  padding: $space-32 0;
 }
 
 // Animation utilities
@@ -178,12 +176,12 @@ a {
   transition: text-shadow 0.3s ease;
   
   &.glowing {
-    text-shadow: 0 0 20px rgba($accent, 0.8);
+    text-shadow: 0 0 20px rgba($heat-mid, 0.8);
   }
 }
 
 // Responsive utilities
-@media (max-width: $breakpoint-md) {
+@media (max-width: 768px) {
   h1 {
     font-size: 2.5rem;
   }
