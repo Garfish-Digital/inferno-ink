@@ -30,9 +30,9 @@ class ScrollAnimationController {
     requestAnimationFrame(() => {
       this.setupInitialStates();
       this.createHeroAnimations();
+      this.createSectionTitleAnimations();
 
       requestIdleCallback(() => {
-        this.createSectionTitleAnimations();
         this.createServiceCardAnimations();
         this.createArtistAnimations();
         this.createGalleryAnimations();
@@ -64,7 +64,7 @@ class ScrollAnimationController {
     gsap.set('.hero-cta', { opacity: 0 });
 
     // Section titles
-    gsap.set('.section-title', { clipPath: 'inset(0 100% 0 0)' });
+    gsap.set('.section-title', { y: 30, opacity: 0 });
 
     // Cards
     gsap.set('.service-card', { y: 40, opacity: 0 });
@@ -129,9 +129,10 @@ class ScrollAnimationController {
       });
 
       tl.to(title, {
-        clipPath: 'inset(0 0% 0 0)',
-        duration: 1.1,
-        ease: 'expo.inOut'
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: 'power2.out'
       });
 
       this.animationTimelines.set(`section-title-${index}`, tl);
