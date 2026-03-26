@@ -128,7 +128,7 @@ class HellFloor {
   // ── Ember System ──────────────────────────────────────────────────────────
 
   initEmberGeometry() {
-    this.maxEmbers = 64;
+    this.maxEmbers = 86;
     const positions = new Float32Array(this.maxEmbers * 3);
     const colors = new Float32Array(this.maxEmbers * 3);
     const sizes = new Float32Array(this.maxEmbers);
@@ -200,7 +200,7 @@ class HellFloor {
           // Taper: the ember is wider at the base (negative ry)
           // and narrows toward the tip (positive ry)
           // This maps ry from [-0.5, 0.5] to a width multiplier [1.0, 0.3]
-          float taper = mix(1.0, 0.3, smoothstep(-0.35, 0.45, ry));
+          float taper = mix(0.5, 0.3, smoothstep(-0.35, 0.45, ry));
           rx *= taper;
 
           // Distance from the tapered centerline
@@ -210,7 +210,7 @@ class HellFloor {
           if (d > 0.48) discard;
 
           // Soft glow falloff — bright core, soft edges
-          float core = 1.0 - smoothstep(0.0, 0.18, d);
+          float core = 1.0 - smoothstep(0.0, 0.27, d);
           float outer = 1.0 - smoothstep(0.1, 0.48, d);
           float shape = core * 0.6 + outer * 0.4;
 
@@ -256,10 +256,10 @@ class HellFloor {
         vy: 15 + Math.random() * 35,
         wobblePhase: Math.random() * Math.PI * 2,
         wobbleFreq: 1.5 + Math.random() * 2,
-        wobbleAmp: 8 + Math.random() * 15,
+        wobbleAmp: 4 + Math.random() * 15,
         life: 0,
         maxLife: 2.5 + Math.random() * 6,
-        size: 8 + Math.random() * 12,
+        size: 4 + Math.random() * 24,
         // Smoothed angle for visual continuity
         angle: Math.PI / 2,
         angleSmooth: 0.08 + Math.random() * 0.04,
