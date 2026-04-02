@@ -24,8 +24,23 @@ const {
     <title>{title}</title>
   </head>
   <body>
-    <!-- Viewport stabilization styles -->
+    <!-- Viewport stabilization + hero pre-hide styles -->
     <style>
+      /* Pre-hide hero elements before GSAP takes ownership.
+         Matches setupInitialStates() in ScrollAnimationController.js
+         so there is no visible flash between first paint and JS init. */
+      .hero-title {
+        clip-path: inset(0 100% 0 0);
+      }
+      .hero-tagline,
+      .hero-description {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      .hero-cta {
+        opacity: 0;
+      }
+
       /* CSS-only viewport stabilization for mobile */
       @media (max-width: 768px) {
         html {
@@ -38,11 +53,6 @@ const {
           min-height: 100vh;
           min-height: 100dvh;
           overflow-x: hidden;
-        }
-        /* Ensure initial hero visibility without JavaScript */
-        .hero-title, .hero-tagline, .hero-description, .hero-cta {
-          opacity: 1 !important;
-          transform: none !important;
         }
       }
     </style>
