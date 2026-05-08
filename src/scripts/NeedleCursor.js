@@ -22,21 +22,36 @@ class NeedleCursor {
   }
 
   createElements() {
-    // Cursor dot — radial gradient core, mix-blend-mode: difference
+    // Cursor container — positioned by GSAP on mousemove. Acts as the anchor;
+    // the needle visual is a child so rotation/tap can apply without fighting
+    // the mousemove transform.
     this.dot = document.createElement('div');
     Object.assign(this.dot.style, {
       position: 'fixed',
       top: '0',
       left: '0',
-      width: '10px',
-      height: '10px',
-      borderRadius: '50%',
-      background: 'radial-gradient(circle, #FFFFFF 0%, #FFD699 40%, #FF6B35 100%)',
-      mixBlendMode: 'difference',
+      width: '2px',
+      height: '12px',
       pointerEvents: 'none',
-      zIndex: '10001',
-      transform: 'translate(-50%, -50%)'
+      zIndex: '10001'
     });
+    // Anchor the tip of the needle (bottom-center) at the mouse position
+    gsap.set(this.dot, { xPercent: -50, yPercent: -100 });
+
+    // Needle visual — a thin tapered sliver, ~2px wide at the top narrowing to
+    // a point at the bottom. Bone-colored with mix-blend-difference so it stays
+    // contextually visible without being loud.
+    this.needle = document.createElement('div');
+    Object.assign(this.needle.style, {
+      width: '100%',
+      height: '100%',
+      mixBlendMode: 'difference'
+    });
+    this.needle.innerHTML = `<svg width="2" height="12" viewBox="0 0 2 12" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:100%;overflow:visible;"><path d="M 0 0 L 2 0 L 1 12 Z" fill="#E8E2D9"/></svg>`;
+    // Pivot for hover rotation and click tap — around the tip so it stays anchored
+    gsap.set(this.needle, { transformOrigin: '50% 100%' });
+    this.dot.appendChild(this.needle);
+
     document.body.appendChild(this.dot);
 
     // Ember trail canvas
@@ -83,7 +98,7 @@ class NeedleCursor {
     this._onMouseOver = (e) => {
       if (e.target.closest('a, button')) {
         this.isHovering = true;
-        gsap.to(this.dot, { scale: 2.5, duration: 0.2, ease: 'power2.out' });
+        gsap.to(this.needle, { rotation: 22, duration: 0.25, ease: 'sine.inOut' });
       }
     };
 
@@ -94,21 +109,18 @@ class NeedleCursor {
         : null;
       if (from && from !== to) {
         this.isHovering = false;
-        gsap.to(this.dot, { scale: 1, duration: 0.2, ease: 'power2.out' });
+        gsap.to(this.needle, { rotation: 0, duration: 0.25, ease: 'sine.inOut' });
       }
     };
 
     this._onMouseDown = () => {
-      gsap.to(this.dot, { scale: 0.6, duration: 0.1, ease: 'power2.out' });
+      // Tap — needle pushes down ~2px past the mouse point briefly
+      gsap.to(this.needle, { y: 2, duration: 0.08, ease: 'sine.inOut' });
       this.burstEmbers(this.mouse.x, this.mouse.y);
     };
 
     this._onMouseUp = () => {
-      gsap.to(this.dot, {
-        scale: this.isHovering ? 2.5 : 1,
-        duration: 0.15,
-        ease: 'power2.out'
-      });
+      gsap.to(this.needle, { y: 0, duration: 0.18, ease: 'sine.inOut' });
     };
 
     this._onResize = () => this.resize();
@@ -188,22 +200,7 @@ class NeedleCursor {
     const dpr = window.devicePixelRatio || 1;
     ctx.clearRect(0, 0, this.canvas.width / dpr, this.canvas.height / dpr);
 
-    // ── Option A: Dot flicker ──
-    // Layered sine waves for organic opacity + scale oscillation
-    const f = this.frameCount;
-    const flicker = 0.92
-      + Math.sin(f * 0.12) * 0.04
-      + Math.sin(f * 0.3) * 0.025
-      + Math.sin(f * 0.7) * 0.015;
-    this.dot.style.opacity = Math.max(0.65, Math.min(1, flicker));
-
-    const breathe = 1.0
-      + Math.sin(f * 0.08) * 0.015
-      + Math.sin(f * 0.2) * 0.01;
-    // Only apply breathe when not in a GSAP scale animation (hover/click)
-    if (!this.isHovering && !this._isClicking) {
-      gsap.set(this.dot, { scale: breathe });
-    }
+    // Needle holds steady — no flicker, no breathe. The trail does the talking.
 
     // ── Ember rendering ──
     // Color palettes: [birth, death]

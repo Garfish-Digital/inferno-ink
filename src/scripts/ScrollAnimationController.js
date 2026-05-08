@@ -66,18 +66,29 @@ class ScrollAnimationController {
     // Section titles
     gsap.set('.section-title', { y: 30, opacity: 0 });
 
-    // Cards
-    gsap.set('.service-card', { y: 40, opacity: 0 });
-    gsap.set('.artist-card', { y: 40, opacity: 0 });
-
-    // Gallery
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    if (galleryItems.length > 0) {
-      gsap.set(galleryItems, { scale: 0.97, opacity: 0, visibility: 'visible' });
-    }
+    // All cards — single unified initial state. Service, artist, and gallery
+    // share the same smooth fade-rise on entrance.
+    gsap.set('.service-card, .artist-card, .gallery-item', {
+      y: 30,
+      opacity: 0,
+      visibility: 'visible'
+    });
 
     // Contact
     gsap.set('.contact-info, .contact-form', { y: 30, opacity: 0 });
+  }
+
+  // ── Card Entrance ───────────────────────────────────────────────────────────
+  // Single smooth fade-rise. Symmetric easing, no internal stagger, no flair.
+
+  playCardEntrance(card, delay = 0) {
+    return gsap.to(card, {
+      y: 0,
+      opacity: 1,
+      duration: 1.1,
+      ease: 'sine.inOut',
+      delay
+    });
   }
 
   // ── Hero ─────────────────────────────────────────────────────────────────────
@@ -139,66 +150,30 @@ class ScrollAnimationController {
     });
   }
 
-  // ── Service Cards ───────────────────────────────────────────────────────────
+  // ── Card Sections ───────────────────────────────────────────────────────────
+  // All 15 cards (services, artists, gallery) share the same per-card
+  // ScrollTrigger: fires when the card's top crosses 30% into the viewport.
 
   createServiceCardAnimations() {
-    const cards = document.querySelectorAll('.service-card');
-    if (cards.length === 0) return;
-
-    gsap.to(cards, {
-      y: 0,
-      opacity: 1,
-      duration: 0.7,
-      ease: 'power2.out',
-      stagger: { amount: 0.4, from: 'start' },
-      scrollTrigger: {
-        trigger: '.services',
-        start: 'top 80%',
-        end: 'top 40%',
-        toggleActions: 'play none none none'
-      }
-    });
+    this.attachCardTriggers(document.querySelectorAll('.service-card'));
   }
-
-  // ── Artist Cards ────────────────────────────────────────────────────────────
 
   createArtistAnimations() {
-    const cards = document.querySelectorAll('.artist-card');
-    if (cards.length === 0) return;
-
-    gsap.to(cards, {
-      y: 0,
-      opacity: 1,
-      duration: 0.7,
-      ease: 'power2.out',
-      stagger: { amount: 0.4, from: 'start' },
-      scrollTrigger: {
-        trigger: '.artists',
-        start: 'top 80%',
-        end: 'top 40%',
-        toggleActions: 'play none none none'
-      }
-    });
+    this.attachCardTriggers(document.querySelectorAll('.artist-card'));
   }
 
-  // ── Gallery ─────────────────────────────────────────────────────────────────
-
   createGalleryAnimations() {
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    if (galleryItems.length === 0) return;
+    this.attachCardTriggers(document.querySelectorAll('.gallery-item'));
+  }
 
-    gsap.to(galleryItems, {
-      scale: 1,
-      opacity: 1,
-      duration: 0.6,
-      ease: 'power1.out',
-      stagger: 0.12,
-      scrollTrigger: {
-        trigger: '.gallery-grid',
-        start: 'top 85%',
-        end: 'top 40%',
-        toggleActions: 'play none none none'
-      }
+  attachCardTriggers(cards) {
+    cards.forEach((card) => {
+      ScrollTrigger.create({
+        trigger: card,
+        start: 'top 70%', // fires when card top is 30% into the viewport
+        once: true,
+        onEnter: () => this.playCardEntrance(card, 0)
+      });
     });
   }
 

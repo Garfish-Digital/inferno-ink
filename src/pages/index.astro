@@ -48,7 +48,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="artists-grid">
         <div class="artist-card artist-featured">
           <div class="artist-image">
-            <img src="/images/artist-phoenix.jpg" alt="Lou Martinez - Color & Traditional Tattoo Artist" />
+            <img src="/images/artist-phoenix.webp" alt="Lou Martinez - Color & Traditional Tattoo Artist" />
           </div>
           <h3>Lou Martinez</h3>
           <p class="artist-specialty">Color & Traditional</p>
@@ -56,7 +56,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <div class="artist-card">
           <div class="artist-image">
-            <img src="/images/artist-raven.jpg" alt="Avery Blackthorne - Blackwork & Gothic Tattoo Artist" />
+            <img src="/images/artist-raven.webp" alt="Avery Blackthorne - Blackwork & Gothic Tattoo Artist" />
           </div>
           <h3>Avery Blackthorne</h3>
           <p class="artist-specialty">Blackwork & Gothic</p>
@@ -64,7 +64,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
         <div class="artist-card">
           <div class="artist-image">
-            <img src="/images/artist-ash.jpg" alt="Ashton Starke - Realism & Portrait Tattoo Artist" />
+            <img src="/images/artist-ash.webp" alt="Ashton Starke - Realism & Portrait Tattoo Artist" />
           </div>
           <h3>Ashton Starke</h3>
           <p class="artist-specialty">Realism & Portraits</p>
@@ -80,49 +80,49 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2 class="section-title">Gallery</h2>
       <div class="gallery-grid">
         <div class="gallery-item">
-          <img src="/images/gallery-1.jpg" alt="Custom Blackwork Tattoo Design" />
+          <img src="/images/gallery-1.webp" alt="Custom Blackwork Tattoo Design" />
           <!-- <div class="gallery-overlay">
             <span class="overlay-style">Blackwork</span>
           </div> -->
         </div>
         <div class="gallery-item">
-          <img src="/images/gallery-2.jpg" alt="Traditional Color Tattoo Art" />
+          <img src="/images/gallery-2.webp" alt="Traditional Color Tattoo Art" />
           <!-- <div class="gallery-overlay">
             <span class="overlay-style">Traditional</span>
           </div> -->
         </div>
         <div class="gallery-item">
-          <img src="/images/gallery-3.jpg" alt="Realistic Portrait Tattoo" />
+          <img src="/images/gallery-3.webp" alt="Realistic Portrait Tattoo" />
           <!-- <div class="gallery-overlay">
             <span class="overlay-style">Realism</span>
           </div> -->
         </div>
         <div class="gallery-item">
-          <img src="/images/gallery-4.jpg" alt="Gothic Sleeve Tattoo Design" />
+          <img src="/images/gallery-4.webp" alt="Gothic Sleeve Tattoo Design" />
           <!-- <div class="gallery-overlay">
             <span class="overlay-style">Gothic</span>
           </div> -->
         </div>
         <div class="gallery-item">
-          <img src="/images/gallery-5.jpg" alt="Geometric Tattoo Pattern" />
+          <img src="/images/gallery-5.webp" alt="Geometric Tattoo Pattern" />
           <!-- <div class="gallery-overlay">
             <span class="overlay-style">Geometric</span>
           </div> -->
         </div>
         <div class="gallery-item">
-          <img src="/images/gallery-6.jpg" alt="Fire-themed Tattoo Artwork" />
+          <img src="/images/gallery-6.webp" alt="Fire-themed Tattoo Artwork" />
           <!-- <div class="gallery-overlay">
             <span class="overlay-style">Illustrative</span>
           </div> -->
         </div>
         <div class="gallery-item">
-          <img src="/images/gallery-7.jpg" alt="Geometric Tattoo Pattern" />
+          <img src="/images/gallery-7.webp" alt="Geometric Tattoo Pattern" />
           <!-- <div class="gallery-overlay">
             <span class="overlay-style">Fine Line</span>
           </div> -->
         </div>
         <div class="gallery-item">
-          <img src="/images/gallery-8.jpg" alt="Fire-themed Tattoo Artwork" />
+          <img src="/images/gallery-8.webp" alt="Fire-themed Tattoo Artwork" />
           <!-- <div class="gallery-overlay">
             <span class="overlay-style">Cover-up</span>
           </div> -->
@@ -134,6 +134,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- Contact Section -->
   <section id="contact" class="section contact">
     <canvas id="hell-canvas"></canvas>
+    <div class="heat-haze" aria-hidden="true"></div>
     <div class="container">
       <h2 class="section-title">Book Your Session</h2>
       <div class="contact-content">
@@ -295,10 +296,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       background: linear-gradient(135deg, $cinder 0%, $iron 100%);
       margin: $space-12;
       padding: $space-12;
-      border-radius: $radius-base;
+    //   border-radius: $radius-base;
       text-align: center;
       border: 1px solid rgba($heat-core, 0.2);
-      transition: all $t-slow $ease-heat;
+      // Specific properties only — `all` would filter GSAP's inline transform/opacity
+      // through this CSS easing curve and create a punch at the end of the entrance.
+      transition: border-color $t-fast $ease-heat;
       position: relative;
       overflow: hidden;
 
@@ -311,7 +314,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         bottom: 0;
         background: linear-gradient(135deg, rgba($heat-core, 0.05) 0%, rgba($heat-mid, 0.05) 100%);
         opacity: 0;
-        transition: all $t-slow $ease-heat;
+        transition: all $t-fast $ease-heat;
+      }
+
+      // Entrance hairline — drives the architectural reveal
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: $heat-core;
+        transform: scaleX(var(--hairline-scale, 0));
+        transform-origin: left center;
+        opacity: var(--hairline-opacity, 0);
+        pointer-events: none;
+        z-index: 2;
       }
 
       &:hover {
@@ -375,8 +394,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       text-align: center;
       padding: $space-8;
       background: rgba($iron, 0.5);
-      border-radius: $radius-base;
-      transition: all $t-base $ease-heat;
+    //   border-radius: $radius-base;
+      // Specific properties only — `all` would filter GSAP's inline transform/opacity
+      // through this CSS easing curve and create a punch at the end of the entrance.
+      transition: border-color $t-base $ease-heat;
       border: 1px solid rgba($heat-mid, 0.2);
       position: relative;
       overflow: hidden;
@@ -390,7 +411,23 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         bottom: 0;
         background: linear-gradient(135deg, rgba($heat-core, 0.05) 0%, rgba($heat-mid, 0.05) 100%);
         opacity: 0;
-        transition: all $t-slow $ease-heat;
+        transition: all $t-fast $ease-heat;
+      }
+
+      // Entrance hairline — drives the architectural reveal
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: $heat-core;
+        transform: scaleX(var(--hairline-scale, 0));
+        transform-origin: left center;
+        opacity: var(--hairline-opacity, 0);
+        pointer-events: none;
+        z-index: 2;
       }
 
       &:hover {
@@ -409,7 +446,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         border-radius: 50%;
         margin: 0 auto $space-6;
         border: 3px solid rgba($heat-mid, 0.3);
-        transition: all $t-base $ease-heat;
+        transition: all $t-slow $ease-heat;
         position: relative;
         overflow: hidden;
         background: linear-gradient(135deg, $heat-core 0%, $heat-mid 100%);
@@ -479,19 +516,54 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     .gallery-item {
       aspect-ratio: 1;
-      border-radius: $radius-base;
+    //   border-radius: $radius-base;
       cursor: pointer;
       position: relative;
       overflow: hidden;
       background: $cinder;
+      border: 1px solid rgba($heat-core, 0.2);
+      // Specific properties only — `all` would filter GSAP's inline transform/opacity
+      // through this CSS easing curve and create a punch at the end of the entrance.
+      transition: border-color $t-fast $ease-heat;
+
+      // Subtle heat tint — matches the hover language used on service + artist cards
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba($heat-core, 0.05) 0%, rgba($heat-mid, 0.05) 100%);
+        opacity: 0;
+        transition: opacity $t-fast $ease-heat;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      // Entrance hairline — same architectural reveal as the other cards
+      &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: $heat-core;
+        transform: scaleX(var(--hairline-scale, 0));
+        transform-origin: left center;
+        opacity: var(--hairline-opacity, 0);
+        pointer-events: none;
+        z-index: 3;
+      }
 
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         object-position: center;
-        transition: transform $t-base $ease-heat, filter $t-base $ease-heat;
-        border-radius: $radius-base;
+        transition: transform $t-slow $ease-heat, filter $t-fast $ease-heat;
+        // border-radius: $radius-base;
       }
 
       .gallery-overlay {
@@ -508,7 +580,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         opacity: 0;
         transition: opacity $t-base $ease-heat;
         z-index: 2;
-        border-radius: $radius-base;
+        // border-radius: $radius-base;
 
         .overlay-style {
           font-family: $font-display;
@@ -517,11 +589,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           text-transform: uppercase;
           color: $bone;
           transform: translateY(12px);
-          transition: transform $t-slow $ease-heat;
+          transition: transform $t-fast $ease-heat;
         }
       }
 
       &:hover {
+        border-color: rgba($heat-core, 0.4);
+
+        &::before {
+          opacity: 1;
+        }
+
         img {
           transform: scale(1.03);
           filter: brightness(0.8) contrast(1.1);
@@ -546,12 +624,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
     #hell-canvas {
       position: absolute;
+      bottom: -25vh;                // bleed 25vh below the section, clipped by overflow:hidden
+      left: -5%;
+      width: 110%;                  // 10% horizontal bleed (5% each side)
+      height: calc(100% + 25vh);    // grow taller so the top still meets the section top
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    // Heat-haze layer — distorts the form/info text along the bottom edge.
+    // Mask graduates the effect: full strength along the bottom, fading upward
+    // so the top of the form remains crisp.
+    .heat-haze {
+      position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 55%;
       pointer-events: none;
-      z-index: 0;
+      z-index: 2;
+      backdrop-filter: url(#heat-haze);
+      -webkit-backdrop-filter: url(#heat-haze);
+      mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 25%, rgba(0,0,0,0) 50%);
+      -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 25%, rgba(0,0,0,0) 50%);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .heat-haze {
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+      }
     }
 
     .container {
@@ -597,7 +699,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         margin-top: $space-8;
         padding: $space-6;
         background: rgba($iron, 0.5);
-        border-radius: $radius-base;
+        // border-radius: $radius-base;
         border-left: 4px solid $heat-core;
 
         h4 {
@@ -626,7 +728,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         padding: $space-4;
         background: rgba($iron, 0.5);
         border: 1px solid rgba($heat-mid, 0.3);
-        border-radius: $radius-base;
+        // border-radius: $radius-base;
         color: $bone;
         font-size: 1rem;
         font-family: $font-body;

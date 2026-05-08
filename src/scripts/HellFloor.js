@@ -1,4 +1,7 @@
 import * as THREE from 'three';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
 class HellFloor {
   constructor() {
@@ -9,6 +12,7 @@ class HellFloor {
     this.isVisible = false;
     this.raf = null;
     this.clock = new THREE.Clock(false);
+    this.useBloom = this.shouldUseBloom();
 
     // Ember cluster spawning
     this.embers = [];
@@ -16,19 +20,42 @@ class HellFloor {
     this.timeSinceLastSpawn = 0;
     this.hasSpawnedOnce = false;
 
-    // Glow pulse state — layered irregular oscillation
+    // Log-shift event state — occasional hidden "the fire below shifted" moment.
+    // Pulse runs through an attack-decay envelope so it rises into and falls out
+    // of view rather than snapping on/off at the loop seam.
+    this.pulseIntensity = 0;
+    this.pulseTimer = -1;            // -1 = idle; >=0 = envelope progress in seconds
+    this.pulseDuration = 4.5;        // total envelope length
+    this.pulseAttack = 0.7;          // seconds to ramp up to peak
+    this.timeSinceLastShift = 0;
+    this.nextLogShiftTime = 18 + Math.random() * 12;
+
+    // Glow pulse state — layered irregular oscillation. Periods range from ~7s
+    // to ~30s so the glow breathes rather than pulses.
     this.glowPhases = [
-      { freq: 0.3, amp: 0.12, offset: 0 },
-      { freq: 0.7, amp: 0.08, offset: 1.7 },
-      { freq: 1.3, amp: 0.05, offset: 3.2 },
+      { freq: 0.13, amp: 0.10, offset: 0 },
+      { freq: 0.27, amp: 0.06, offset: 1.7 },
+      { freq: 0.52, amp: 0.04, offset: 3.2 },
     ];
 
     this.initRenderer();
     this.initScene();
     this.initGlowPlane();
     this.initEmberGeometry();
+    if (this.useBloom) this.initBloom();
     this.initVisibilityObserver();
     this.initResize();
+  }
+
+  // ── Capability Probe ──────────────────────────────────────────────────────
+
+  shouldUseBloom() {
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isSmallViewport = window.innerWidth < 480;
+    // Bloom on for desktop and recent iOS; off for small viewports and most Android touch
+    return (!isCoarsePointer || isIOS) && !isSmallViewport;
   }
 
   // ── Renderer ──────────────────────────────────────────────────────────────
@@ -45,10 +72,14 @@ class HellFloor {
   }
 
   updateSize() {
-    const section = this.canvas.parentElement;
-    const rect = section.getBoundingClientRect();
+    // Read the canvas's own bounding rect — the canvas may be larger than its
+    // parent section due to bleed CSS (width: 110%, height: 100% + 15vh, etc).
+    const rect = this.canvas.getBoundingClientRect();
     const dpr = Math.min(window.devicePixelRatio, 2);
-    this.renderer.setSize(rect.width, rect.height);
+
+    // Pass false as the third arg so renderer doesn't write inline width/height
+    // onto the canvas element — that would override the bleed CSS.
+    this.renderer.setSize(rect.width, rect.height, false);
     this.renderer.setPixelRatio(dpr);
     this.width = rect.width;
     this.height = rect.height;
@@ -59,6 +90,11 @@ class HellFloor {
       this.camera.top = rect.height / 2;
       this.camera.bottom = -rect.height / 2;
       this.camera.updateProjectionMatrix();
+    }
+
+    if (this.composer) {
+      this.composer.setSize(rect.width, rect.height);
+      this.composer.setPixelRatio(dpr);
     }
   }
 
@@ -86,6 +122,7 @@ class HellFloor {
       uniforms: {
         uTime: { value: 0 },
         uIntensity: { value: 0.0 },
+        uPulseIntensity: { value: 0.0 },
         uResolution: { value: new THREE.Vector2(this.width, this.height) }
       },
       vertexShader: `
@@ -98,23 +135,86 @@ class HellFloor {
       fragmentShader: `
         uniform float uTime;
         uniform float uIntensity;
+        uniform float uPulseIntensity;
         uniform vec2 uResolution;
         varying vec2 vUv;
 
+        // Hash + value noise + FBM — low-cost organic distortion
+        float hash(vec2 p) {
+          return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
+        }
+
+        float noise(vec2 p) {
+          vec2 i = floor(p);
+          vec2 f = fract(p);
+          float a = hash(i);
+          float b = hash(i + vec2(1.0, 0.0));
+          float c = hash(i + vec2(0.0, 1.0));
+          float d = hash(i + vec2(1.0, 1.0));
+          vec2 u = f * f * (3.0 - 2.0 * f);
+          return mix(mix(a, b, u.x), mix(c, d, u.x), u.y);
+        }
+
+        float fbm(vec2 p) {
+          float v = 0.0;
+          float a = 0.5;
+          for (int i = 0; i < 4; i++) {
+            v += a * noise(p);
+            p = p * 2.0 + vec2(13.0, 7.0);
+            a *= 0.5;
+          }
+          return v;
+        }
+
+        // Hidden hot point — reads as a molten pocket below the surface
+        float hotSpot(vec2 uv, vec2 center, float radius, float pulse) {
+          vec2 d = (uv - center) * vec2(1.0, 1.5);
+          return smoothstep(radius * pulse, 0.0, length(d));
+        }
+
         void main() {
-          float y = vUv.y;
-          float glowMask = smoothstep(0.38, 0.0, y);
+          vec2 uv = vUv;
 
-          float xCenter = abs(vUv.x - 0.5) * 2.0;
+          // Organic distortion — perturbs the glow's edges so it doesn't read as a gradient
+          float n1 = fbm(uv * 4.0 + vec2(uTime * 0.035, 0.0));
+          float n2 = fbm(uv * 4.0 + vec2(0.0, uTime * 0.045));
+          vec2 distorted = uv + vec2(n1 - 0.5, n2 - 0.5) * 0.05;
+
+          // Base ambient floor — bottom-weighted, center-weighted, breathing
+          float baseFalloff = smoothstep(0.46, 0.0, distorted.y);
+          float xCenter = abs(distorted.x - 0.5) * 2.0;
           float xFalloff = 1.0 - smoothstep(0.0, 1.0, xCenter * xCenter);
+          float baseGlow = baseFalloff * xFalloff * 0.55;
 
-          float glow = glowMask * xFalloff * uIntensity;
+          // Hidden hot points — pulsing on slow irregular rhythms (periods ~20–60s)
+          float p1 = 1.0 + 0.18 * sin(uTime * 0.17 + 0.0);
+          float p2 = 1.0 + 0.16 * sin(uTime * 0.11 + 1.7);
+          float p3 = 1.0 + 0.20 * sin(uTime * 0.23 + 3.4);
+          float p4 = 1.0 + 0.14 * sin(uTime * 0.31 + 5.1);
 
-          vec3 deepColor = vec3(0.545, 0.0, 0.0);
-          vec3 coreColor = vec3(0.8, 0.133, 0.0);
-          vec3 color = mix(deepColor, coreColor, glow * 0.6);
+          float h1 = hotSpot(distorted, vec2(0.28, -0.04), 0.22, p1);
+          float h2 = hotSpot(distorted, vec2(0.52, -0.10), 0.26, p2);
+          float h3 = hotSpot(distorted, vec2(0.74, -0.02), 0.20, p3);
+          float h4 = hotSpot(distorted, vec2(0.42,  0.04), 0.14, p4);
 
-          gl_FragColor = vec4(color, glow * 0.45);
+          float hotGlow = max(max(h1, h2), max(h3, h4));
+
+          // Log-shift event — brief bottom-wide flush of heat
+          float pulseWash = uPulseIntensity * smoothstep(0.55, 0.0, distorted.y) * xFalloff;
+
+          float glow = (baseGlow + hotGlow * 0.40 + pulseWash * 0.088) * uIntensity;
+
+          // Color ladder — deep blood at coldest, brightening through core to ember
+          vec3 deepColor   = vec3(0.45, 0.0, 0.0);    // $heat-deep
+          vec3 coreColor   = vec3(0.5, 0.12, 0.0);    // $heat-core
+          vec3 brightColor = vec3(.8, 0.2, 0.1);    // $heat-bright
+
+          vec3 color = mix(deepColor, coreColor, smoothstep(0.0, 0.6, glow));
+          color = mix(color, brightColor, smoothstep(0.55, 1.1, glow) * 0.45);
+
+          float alpha = clamp(glow * 0.55, 0.0, 0.85);
+
+          gl_FragColor = vec4(color, alpha);
         }
       `
     });
@@ -230,42 +330,91 @@ class HellFloor {
     this.scene.add(this.emberPoints);
   }
 
+  // ── Bloom Post-Pass ───────────────────────────────────────────────────────
+
+  initBloom() {
+    this.composer = new EffectComposer(this.renderer);
+    const renderPass = new RenderPass(this.scene, this.camera);
+    this.composer.addPass(renderPass);
+
+    // Threshold tuned high so only ember cores and brightest hot points bloom —
+    // dim ambient glow does not bleed and wash the scene out.
+    this.bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(this.width, this.height),
+      0.65, // strength
+      0.55, // radius
+      0.55  // threshold
+    );
+    this.composer.addPass(this.bloomPass);
+    this.composer.setSize(this.width, this.height);
+    this.composer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  }
+
+  // ── Log-Shift Event ───────────────────────────────────────────────────────
+
+  triggerLogShift() {
+    // The fire below shifts — subtle glow flush plus a slightly denser, slightly
+    // faster cluster. Toned down so the event reads as a quiet shift, not a flare.
+    this.pulseTimer = 0;
+    this.spawnCluster({
+      count: 4 + Math.floor(Math.random() * 4),
+      speedBoost: 1.15
+    });
+  }
+
   randomSpawnDelay() {
     // Seconds between clusters
     return 1 + Math.random() * 4;
-    // return 4 + Math.random() * 4;
   }
 
-  spawnCluster() {
-    //Cluster size
-    const count = 1 + Math.floor(Math.random() * 6);
-    const clusterX = (Math.random() - 0.5) * this.width * 0.7;
+  spawnCluster(overrides = {}) {
+    const count = overrides.count ?? (1 + Math.floor(Math.random() * 6));
+    const clusterX = overrides.clusterX ?? (Math.random() - 0.5) * this.width * 0.7;
+    const sparkChance = overrides.sparkChance ?? 0.65;
+    const speedBoost = overrides.speedBoost ?? 1.0;
     const halfH = this.height / 2;
 
     for (let i = 0; i < count; i++) {
       if (this.embers.length >= this.maxEmbers) break;
 
       const spread = 30 + Math.random() * 40;
-      // Initial lateral velocity — slight random drift
-      const vx0 = (Math.random() - 0.5) * 8;
+      const isSpark = Math.random() < sparkChance;
 
-      this.embers.push({
-        x: clusterX + (Math.random() - 0.5) * spread,
-        y: -halfH,
-        vx: vx0,
-        vy: 15 + Math.random() * 35,
-        wobblePhase: Math.random() * Math.PI * 2,
-        wobbleFreq: 1.5 + Math.random() * 2,
-        wobbleAmp: 4 + Math.random() * 15,
-        life: 0,
-        maxLife: 2.5 + Math.random() * 6,
-        size: 4 + Math.random() * 24,
-        // Smoothed angle for visual continuity
-        angle: Math.PI / 2,
-        angleSmooth: 0.08 + Math.random() * 0.04,
-        // Color variant: 0 = glow→deep, 1 = flame→mid
-        colorVariant: Math.random() < 0.5 ? 0 : 1,
-      });
+      if (isSpark) {
+        // Sparks — fast, small, bright. Subtle lateral drift so they don't shoot dead straight.
+        this.embers.push({
+          x: clusterX + (Math.random() - 0.5) * spread * 0.5,
+          y: -halfH,
+          vx: (Math.random() - 0.5) * 12,
+          vy: (70 + Math.random() * 60) * speedBoost,
+          wobblePhase: Math.random() * Math.PI * 2,
+          wobbleFreq: 2 + Math.random() * 2.5,
+          wobbleAmp: 10 + Math.random() * 8,
+          life: 0,
+          maxLife: 3.0 + Math.random() * 3.0,
+          size: 2 + Math.random() * 4,
+          angle: Math.PI / 2,
+          angleSmooth: 0.15 + Math.random() * 0.05,
+          colorVariant: 1, // heat-flame → heat-mid (yellow-white head)
+        });
+      } else {
+        // Embers — slow, drifting, the bulk of the scene
+        this.embers.push({
+          x: clusterX + (Math.random() - 0.5) * spread,
+          y: -halfH,
+          vx: (Math.random() - 0.5) * 8,
+          vy: (15 + Math.random() * 50) * speedBoost,
+          wobblePhase: Math.random() * Math.PI * 2,
+          wobbleFreq: 1.5 + Math.random() * 2,
+          wobbleAmp: 4 + Math.random() * 15,
+          life: 0,
+          maxLife: 7.5 + Math.random() * 18,
+          size: 4 + Math.random() * 12,
+          angle: Math.PI / 2,
+          angleSmooth: 0.08 + Math.random() * 0.04,
+          colorVariant: Math.random() < 0.5 ? 0 : 1,
+        });
+      }
     }
   }
 
@@ -391,7 +540,23 @@ class HellFloor {
     this.glowMaterial.uniforms.uTime.value = elapsed;
     this.glowMaterial.uniforms.uIntensity.value = Math.max(0, glowIntensity);
 
-    // Embers
+    // Pulse envelope — attack (ease-out rise) followed by a longer decay (ease-in fall)
+    if (this.pulseTimer >= 0) {
+      this.pulseTimer += dt;
+      if (this.pulseTimer < this.pulseAttack) {
+        const t = this.pulseTimer / this.pulseAttack;
+        this.pulseIntensity = 1.0 - Math.pow(1.0 - t, 2);
+      } else if (this.pulseTimer < this.pulseDuration) {
+        const t = (this.pulseTimer - this.pulseAttack) / (this.pulseDuration - this.pulseAttack);
+        this.pulseIntensity = Math.pow(1.0 - t, 2);
+      } else {
+        this.pulseIntensity = 0;
+        this.pulseTimer = -1;
+      }
+    }
+    this.glowMaterial.uniforms.uPulseIntensity.value = this.pulseIntensity;
+
+    // Embers + log-shift events
     if (!this.isReducedMotion) {
       this.timeSinceLastSpawn += dt;
       if (this.timeSinceLastSpawn >= this.nextSpawnTime) {
@@ -399,10 +564,22 @@ class HellFloor {
         this.timeSinceLastSpawn = 0;
         this.nextSpawnTime = this.randomSpawnDelay();
       }
+
+      this.timeSinceLastShift += dt;
+      if (this.timeSinceLastShift >= this.nextLogShiftTime) {
+        this.triggerLogShift();
+        this.timeSinceLastShift = 0;
+        this.nextLogShiftTime = 25 + Math.random() * 20;
+      }
+
       this.updateEmbers(dt);
     }
 
-    this.renderer.render(this.scene, this.camera);
+    if (this.composer) {
+      this.composer.render();
+    } else {
+      this.renderer.render(this.scene, this.camera);
+    }
     this.raf = requestAnimationFrame(() => this.animate());
   }
 
@@ -443,6 +620,9 @@ class HellFloor {
         this.glowMaterial.uniforms.uResolution.value.set(this.width, this.height);
       }
     });
+    // Observe the canvas itself so changes from bleed CSS (vh-based) are caught
+    // alongside parent-driven changes.
+    this.resizeObserver.observe(this.canvas);
     this.resizeObserver.observe(this.canvas.parentElement);
   }
 
@@ -455,6 +635,8 @@ class HellFloor {
     if (this.emberGeometry) this.emberGeometry.dispose();
     if (this.emberPoints) this.emberPoints.material.dispose();
     if (this.glowMaterial) this.glowMaterial.dispose();
+    if (this.composer) this.composer.dispose();
+    if (this.bloomPass) this.bloomPass.dispose();
     if (this.renderer) this.renderer.dispose();
   }
 }

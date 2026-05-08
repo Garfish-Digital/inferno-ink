@@ -588,7 +588,68 @@ Here are all the adjustable values in HellFloor.js:
   - Deep color: rgb(0.545, 0.0, 0.0) — #8B0000
   - Core color: rgb(0.8, 0.133, 0.0) — #CC2200
 
+---
+
+Size
+  - Width / height — the canvas's box, set in vw/vh (viewport units), % (parent-relative), or px.                                                                                                                                                                                                                     
+  - Aspect ratio — width:height. Widening without growing the height makes it more "landscape."                                                                                                                                          
+  Position
+  - Offset — distance from a reference edge: top, right, bottom, left. bottom: -15vh puts the canvas's bottom edge 15vh below its container's bottom.
+  - Translate — transform: translate(...) shifts the rendered element without changing layout flow. Useful when you want to move pixels but not push siblings around.                                                                                                                                                 
+
+  Clipping & bleed
+  - Bleed — content extending past the container's visible bounds, intentionally clipped. Borrowed from print.
+  - Overflow — the CSS property controlling whether bleed shows or gets cut. The Contact section already has overflow: hidden, which is exactly what makes bled content "unreachable by scroll." Without it, a tall canvas would extend the page and become scrollable.                                               
+                              
+  Mapping your example
+  What you described translates to:
+  - Horizontal bleed of the canvas past the section's left/right edges
+  - A negative bottom offset of 15vh on the canvas
+  - The Contact section's existing overflow: hidden clips the bleed for free
+
+  In CSS that's roughly:
+  #hell-canvas {
+    width: 110%;                 // 10% horizontal bleed total
+    left: -5%;                   // centered                  
+    bottom: -15vh;               // bottom edge 15vh below section bottom
+    height: calc(100% + 15vh);   // grow taller so the top still meets the section top
+  }
+  - Translate — transform: translate(...) shifts the rendered element without changing layout flow. Useful when you want to move pixels but not push siblings around.
+
+  Clipping & bleed
+  - Bleed — content extending past the container's visible bounds, intentionally clipped. Borrowed from print.
+  - Overflow — the CSS property controlling whether bleed shows or gets cut. The Contact section already has overflow: hidden, which is exactly what makes bled content "unreachable by scroll." Without it, a tall canvas would extend the page and become scrollable.
+
+  Mapping your example
+  What you described translates to:
+  - Horizontal bleed of the canvas past the section's left/right edges
+  - A negative bottom offset of 15vh on the canvas
+  - The Contact section's existing overflow: hidden clips the bleed for free
+
+  In CSS that's roughly:
+  #hell-canvas {
+    width: 110%;                 // 10% horizontal bleed total
+    left: -5%;                   // centered
+    bottom: -15vh;               // bottom edge 15vh below section bottom
+    height: calc(100% + 15vh);   // grow taller so the top still meets the section top
+  }
+
+  So you can describe future tweaks as "bleed the canvas 8vw horizontally" or "negative bottom offset of 20vh" or "bleed 5vh above the section top," and I'll know exactly where to land.
+
+  Want me to apply the example values now, or were you mostly nailing down the language?
+
+---
 
 
+Original:
+vec3 deepColor   = vec3(0.545, 0.0, 0.0);    // $heat-deep
+          vec3 coreColor   = vec3(0.85, 0.18, 0.0);    // $heat-core
+          vec3 brightColor = vec3(1.0, 0.42, 0.21);    // $heat-bright
 
-.to('.hero-cta', {y: 0,opacity: 1,scale: 1,duration: 0.8,ease: 'power2.out'}, 1.1);
+          vec3 color = mix(deepColor, coreColor, smoothstep(0.0, 0.6, glow));
+          color = mix(color, brightColor, smoothstep(0.55, 1.1, glow) * 0.45);
+
+
+-1. We mean 30% scrolled into view.
+-2. We absolutely need the card from the Gallery section to behave like the cards in the Service and Artist sections. We want to remove the clip-path, and all 15 cards will share the same exact behavior.
+-We have decided to employ Option 3: sine.inOut (symmetric ease, no punch). There truly must be no punch anywhere in the behavior--it is a very distasteful look for this website.
